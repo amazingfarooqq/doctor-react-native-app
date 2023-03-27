@@ -18,8 +18,8 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
-      <ChatsScreen />
-      {/* <ChatScreen /> */}
+      {/* <ChatsScreen /> */}
+      <ChatScreen />
       <StatusBar style="auto" />
     </View>
   );
