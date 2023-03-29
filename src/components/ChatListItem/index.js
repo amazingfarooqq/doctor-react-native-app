@@ -4,6 +4,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useNavigation } from "@react-navigation/native";
 
 dayjs.extend(relativeTime);
 
@@ -13,12 +14,13 @@ const ChatListItem = ({
   selectable = false,
   isSelected = false,
 }) => {
+  
+  const {item: {user, lastMessage} } = chat
+  const navigation = useNavigation()
 
-    const {item: {user, lastMessage} } = chat
 
-    console.log({chat});
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable onPress={() => navigation.navigate("Chat", {id: chat.id, name: user.name })} style={styles.container}>
       <Image source={{ uri: user.image }} style={styles.image} />
 
       <View style={styles.content}>

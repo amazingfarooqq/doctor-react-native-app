@@ -3,8 +3,10 @@ import { View, Text, FlatList } from "react-native";
 import chats from "./../../assets/data/chats.json";
 import ChatListItem from "../components/ChatListItem";
 import DoctorRegister from "../components/DoctorRegister";
+import { useNavigation } from "@react-navigation/native";
 
 const ChatsScreen = () => {
+  const navigation = useNavigation();
   console.log({ chats });
   const chat = {
     id: 1,
@@ -21,11 +23,11 @@ const ChatsScreen = () => {
   };
   return (
     <>
-    <DoctorRegister />
+      <DoctorRegister />
       <FlatList
         data={chats}
-        renderItem={(item => <ChatListItem chat={item}/>)}
-    />
+        renderItem={(item) => <ChatListItem chat={item} />}
+      />
     </>
   );
 };
