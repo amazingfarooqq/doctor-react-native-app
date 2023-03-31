@@ -1,8 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View, TextInput , Button} from 'react-native';
-import chats from "./../../../assets/data/chats.json"
 
-const DoctorRegister = () => {
+const Register = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [inputValues, setInputValues] = useState({
@@ -10,6 +10,8 @@ const DoctorRegister = () => {
     // image: "",
     phoneNumber: ""
   })
+
+  const navigation = useNavigation()
 
   const onChange = (e) => {
     const {name, value} = e.target
@@ -30,58 +32,35 @@ const DoctorRegister = () => {
 
   return (
     <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        {/* <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable  
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View> */}
-            <>
-        <TextInput
-            style={styles.input}
-            value={inputValues.name}
-            name="name"
-            placeholder={"name"}
-            onChangeText={onChange}
-            autoCapitalize={"none"}
-        />
-        {/* <TextInput
-            style={styles.input}
-            value={inputValues.image}
-            onChangeText={onChange}
-        /> */}
-         <TextInput
-            style={styles.input}
-            name="phoneNumber"
-            placeholder="phone number"
-            value={inputValues.phoneNumber}
-            onChangeText={onChange}
-        />
-        <Button title={"Register"} onPress={onSubmit} />
-        </>
-      </Modal>
-      <Pressable
+
+      <Text style={styles.brandName}>Doctor Clinico!</Text>
+
+      {/* <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Register as a doctor</Text>
+        <Text style={styles.textStyle}>Emergency for patient</Text>
+      </Pressable> */}
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => navigation.navigate("RegisterDoctorCategories")}>
+        <Text style={styles.textStyle}>Register as a Doctor</Text>
+      </Pressable>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => navigation.navigate("RegisterPatient")}>
+        <Text style={styles.textStyle}>Register as a Patient</Text>
       </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  brandName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -104,12 +83,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
+    marginTop: "1px"
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: '#0B2447',
   },
   buttonClose: {
     backgroundColor: '#2196F3',
@@ -118,6 +98,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 20
   },
   modalText: {
     marginBottom: 15,
@@ -130,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DoctorRegister;
+export default Register;
