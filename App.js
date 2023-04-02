@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Navigator from './src/navigate';
 import ChatScreen from './src/screen/ChatScreen';
 import ChatsScreen from './src/screen/ChatsScreen';
+import { ContextAPIProvider } from './src/features/contextapi';
 
 export default function App() {
   const chat = {
@@ -18,14 +19,16 @@ export default function App() {
     }
   }
   return (
-    <View style={styles.container}>
-      {/* <ChatsScreen /> */}
-      {/* <ChatScreen /> */}
+    <ContextAPIProvider>
+      <View style={styles.container}>
+        {/* <ChatsScreen /> */}
+        {/* <ChatScreen /> */}
 
-      <Navigator />
+        <Navigator />
 
-      <StatusBar style="auto" />
-    </View>
+        <StatusBar style="auto" />
+      </View>
+    </ContextAPIProvider>
   );
 }
 

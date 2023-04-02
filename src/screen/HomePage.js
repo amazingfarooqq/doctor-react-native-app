@@ -50,6 +50,11 @@ const Register = () => {
         onPress={() => navigation.navigate("RegisterPatient")}>
         <Text style={styles.textStyle}>Register as a Patient</Text>
       </Pressable>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => navigation.navigate("AdminPage")}>
+        <Text style={styles.textStyle}>Admin Page</Text>
+      </Pressable>
     </View>
   );
 };

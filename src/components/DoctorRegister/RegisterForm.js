@@ -8,9 +8,12 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { useContextAPI } from "../../features/contextapi";
 
 const DoctorRegisterForm = (props) => {
   const router = useRoute();
+
+  const { registerToCollection } = useContextAPI()
 
   // const {category, description} = router?.params?.item
 
@@ -20,13 +23,13 @@ const DoctorRegisterForm = (props) => {
 
 
   
-  const onSubmit = () => {
-    console.log({fullname,email, phoneNumber});
+  const onSubmit = async () => {
+
+    const formdata = {fullname,email, phoneNumber}
+
+    await registerToCollection("doctorRegisterList", phoneNumber, formdata)
   }
 
-
-
-  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -34,7 +37,6 @@ const DoctorRegisterForm = (props) => {
         <View style={styles.header}>
           <Text style={styles.title}>Register for sa</Text>
 
-          <Text style={styles.subtitle}>Fill out form below:</Text>
         </View>
 
         <View style={styles.form}>

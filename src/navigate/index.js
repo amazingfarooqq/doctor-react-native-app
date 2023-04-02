@@ -9,6 +9,8 @@ import HomePage from '../screen/HomePage';
 import PatientRegisterForm from '../components/PatientRegister/RegisterForm';
 import DoctorsCategories from '../screen/DoctorsCategories';
 import DoctorRegisterForm from '../components/DoctorRegister/RegisterForm';
+import OnBoardScreen from '../screen/OnBoardScreen';
+import AdminPage from '../screen/AdminPage';
 
 const Navigator = () => {
 
@@ -18,9 +20,14 @@ const Navigator = () => {
       <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: "whitesmoke" } }} >
 
 
-        <Stack.Screen name="RegisterDoctor" component={DoctorRegisterForm} />
+        <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} options={{headerShown: false}}/>
         <Stack.Screen name="HomePage" component={HomePage} options={{headerShown: false}}/>
+
+        <Stack.Screen name="RegisterDoctor" component={DoctorRegisterForm} />
         <Stack.Screen name="Home" component={MainTabNavigator} options={{headerShown: false}}/>
+
+
+        <Stack.Screen name="AdminPage" component={AdminPage} options={{headerShown: false}}/>
 
 
         <Stack.Screen name="RegisterDoctorCategories" component={DoctorsCategories} options={{ title: 'Doctor Categories' }}/>
