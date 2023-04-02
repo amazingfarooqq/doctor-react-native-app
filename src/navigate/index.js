@@ -18,12 +18,12 @@ const Navigator = () => {
       <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: "whitesmoke" } }} >
 
 
+        <Stack.Screen name="RegisterDoctor" component={DoctorRegisterForm} />
         <Stack.Screen name="HomePage" component={HomePage} options={{headerShown: false}}/>
         <Stack.Screen name="Home" component={MainTabNavigator} options={{headerShown: false}}/>
 
 
         <Stack.Screen name="RegisterDoctorCategories" component={DoctorsCategories} options={{ title: 'Doctor Categories' }}/>
-        <Stack.Screen name="RegisterDoctor" component={DoctorRegisterForm} />
 
 
         <Stack.Screen name="RegisterPatient" component={PatientRegisterForm} options={{headerShown: false}}/>
