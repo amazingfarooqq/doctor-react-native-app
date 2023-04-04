@@ -71,7 +71,7 @@ const OnBoardScreen = () => {
         }
         style={styles.logo}
       />
-      <Text style={styles.welcomeText}>Welcome to the Doctor App!</Text>
+      <Text style={styles.welcomeText}>Welcome to the Doctor Clinico!</Text>
       <Text style={styles.subtitleText}>
         Please enter your phone number to continue
       </Text>
