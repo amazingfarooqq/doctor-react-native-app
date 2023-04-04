@@ -3,32 +3,8 @@ import React, {useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View, TextInput , Button} from 'react-native';
 
 const Register = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const [inputValues, setInputValues] = useState({
-    name: "",
-    // image: "",
-    phoneNumber: ""
-  })
 
   const navigation = useNavigation()
-
-  const onChange = (e) => {
-    const {name, value} = e.target
-
-    setInputValues({
-        ...inputValues,
-        [name]: value
-    })
-  }
-
-  const onSubmit = () => {
-    console.log(inputValues);
-    // chats.push({
-    //     name: inputValues.name,
-    //     phoneNumber: inputValues.phoneNumber
-    // })
-  }
 
   return (
     <View style={styles.centeredView}>

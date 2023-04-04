@@ -11,38 +11,58 @@ import {
 } from "react-native";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useContextAPI } from "../features/contextapi";
 
 const OnBoardScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const { users } = useContextAPI();
 
-  
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleContinuePress = () => {
-    // Add logic to verify phone number and navigate to next screen
+    if(!users) return
+    const result = users?.find((item) => item.id == phoneNumber);
 
-    console.log("clicked");
-    const appVerifier = window.recaptchaVerifier;
+    if (!result) {
+      navigation.navigate("HomePage");
+    } else {
+      console.log(result);
 
-    const auth = getAuth();
-    signInWithPhoneNumber(auth, "+923483027503", appVerifier)
-      .then((confirmationResult) => {
-        // SMS sent. Prompt user to type the code from the message, then sign the
-        // user in with confirmationResult.confirm(code).
-        window.confirmationResult = confirmationResult;
-        console.log({confirmationResult});
-        // ...
-      })
-      .catch((error) => {
-        // Error; SMS not sent
-        console.log({error});
-        // ...
-      });
+      if (result.admin) {
+        navigation.navigate("AdminPage");
+      }
+
+      if (result.doctor) {
+        // navigation.navigate("HomePage");
+      }
+
+      if (result.patient) {
+        navigation.navigate("Chats");
+      }
+    }
   };
 
+  // const handleContinuePress = () => {
+  //   // Add logic to verify phone number and navigate to next screen
 
+  //   const appVerifier = window.recaptchaVerifier;
 
-  console.log({ phoneNumber });
+  //   const auth = getAuth();
+  //   signInWithPhoneNumber(auth, "+923483027503", appVerifier)
+  //     .then((confirmationResult) => {
+  //       // SMS sent. Prompt user to type the code from the message, then sign the
+  //       // user in with confirmationResult.confirm(code).
+  //       window.confirmationResult = confirmationResult;
+  //       console.log({confirmationResult});
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       // Error; SMS not sent
+  //       console.log({error});
+  //       // ...
+  //     });
+  // };
+
   return (
     <View style={styles.container}>
       <Image
@@ -71,7 +91,7 @@ const OnBoardScreen = () => {
       /> */}
       <TouchableOpacity
         style={styles.continueButton}
-        onPress={() => navigation.navigate("HomePage")}>
+        onPress={handleContinuePress}>
         <Text style={styles.continueButtonText}>Continue</Text>
       </TouchableOpacity>
     </View>

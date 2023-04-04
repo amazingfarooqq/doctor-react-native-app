@@ -1,35 +1,42 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { db } from "./firebaseauth";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 
 const Context = createContext({});
 export const useContextAPI = () => useContext(Context);
 
 export const ContextAPIProvider = ({ children }) => {
+  const [users, setUsers] = useState([]);
 
-    const registerToCollection = (collectionName, documentName, dataObject) => {
-        return setDoc(doc(db, collectionName, documentName), dataObject);
-    };
+  const usersFunc = () => {
+    const dababaseRef = collection(db, "users");
+    getDocs(dababaseRef)
+      .then((res) => {
+        const userss = res.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        console.log({ userss });
+        setUsers(userss);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    usersFunc();
+  }, []);
 
 
-    const phoneNumberRegisterFunc = () => {
+  const filterUsers = (phn) => {
+    users?.find(item => item.id == phn)
+  }
 
-    }
+  const registerToCollection = (collectionName, documentName, dataObject) => {
+    return setDoc(doc(db, collectionName, documentName), dataObject);
+  };
 
-
-    // const get_all_user_data = () => {
-    //     const dababaseRef = collection(db, "users");
-    //     getDocs(dababaseRef)
-    //         .then((res) => {
-    //             const users = res.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    //         }).catch((err) => {
-    //             console.log(err);
-    //         });
-    // }
-
-    return (
-        <Context.Provider value={{ registerToCollection, phoneNumberRegisterFunc }}>
-            {children}
-        </Context.Provider>
-    )
-}
+  return (
+    <Context.Provider value={{ registerToCollection, users }}>
+      {children}
+    </Context.Provider>
+  );
+};
