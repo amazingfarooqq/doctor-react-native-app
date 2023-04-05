@@ -9,27 +9,36 @@ import { useNavigation } from "@react-navigation/native";
 dayjs.extend(relativeTime);
 
 const ChatListItem = ({
-    chat,
+  filteredDoctor,
   onPress = () => {},
   selectable = false,
   isSelected = false,
 }) => {
-  
-  const {item: {user, lastMessage} } = chat
-  const navigation = useNavigation()
+  const { item } = filteredDoctor;
 
+  console.log({item});
+
+
+  console.log({filteredDoctor});
+  const navigation = useNavigation();
+
+  const user = []
 
   return (
-    <Pressable onPress={() => navigation.navigate("Chat", {id: chat.id, name: user.name })} style={styles.container}>
-      <Image source={{ uri: user.image }} style={styles.image} />
+    <Pressable
+      onPress={() =>
+        navigation.navigate("Chat", { id: chat.id, name: user.name })
+      }
+      style={styles.container}>
+      <Image source={{ uri: "https://wallpapers.com/images/hd/aesthetic-profile-picture-nybkp4c7hgasdo5j.jpg" }} style={styles.image} />
 
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={1}>
-          {user.name}
+          {item?.fullname}
         </Text>
 
         <Text numberOfLines={2} style={styles.subTitle}>
-          {lastMessage.text}
+          {item?.category}
         </Text>
       </View>
       {selectable &&

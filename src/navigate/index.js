@@ -11,6 +11,7 @@ import DoctorsCategories from "../screen/DoctorsCategories";
 import DoctorRegisterForm from "../components/DoctorRegister/RegisterForm";
 import OnBoardScreen from "../screen/OnBoardScreen";
 import AdminPage from "../screen/AdminPage";
+import DoctorCategoriesForPatient from "../components/PatientRegister/DoctorCategoriesForPatient";
 
 const Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ const Navigator = () => {
         <Stack.Screen name="RegisterDoctorCategories" component={DoctorsCategories} options={{ title: "Doctor Categories" }} />
 
         <Stack.Screen name="RegisterPatient" component={PatientRegisterForm} options={{ headerShown: false }} />
+        <Stack.Screen name="DoctorCategoriesForPatient" component={DoctorCategoriesForPatient} options={{ headerShown: false }} />
 
         <Stack.Screen name="Home" component={MainTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="Chats" component={ChatsScreen} />

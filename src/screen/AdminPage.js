@@ -33,7 +33,7 @@ const AdminPage = () => {
         <View style={styles.header}>
           <Text style={styles.title}>Admin Dashboard</Text>
 
-          <Text style={styles.subtitle}>Sign in to your account</Text>
+          <Text style={styles.subtitle}>List of requests for registration</Text>
         </View>
 
         <View style={styles.form}>
@@ -54,16 +54,18 @@ const AdminPage = () => {
                     <Text style={styles.cell}>{user.email}</Text>
                     <Text style={styles.cell}>{user.phoneNumber}</Text>
                     <View style={styles.cell}>
+                      {user.approval ?
                       <Pressable
                         style={[styles.button, styles.acceptbtn]}
                         onPress={() => {}}>
                         <Text style={styles.acceptbtn}>Accept</Text>
-                      </Pressable>
+                      </Pressable> :
                       <Pressable
-                        style={[styles.button, styles.rejectbtn]}
+                        style={[styles.button, styles.acceptedbtn]}
                         onPress={() => {}}>
-                        <Text style={styles.rejectbtn}>Reject</Text>
+                        <Text style={styles.rejectbtn}>Accepted</Text>
                       </Pressable>
+                      }
                     </View>
                   </View>
                 )}
@@ -139,8 +141,8 @@ const styles = StyleSheet.create({
   acceptbtn: {
     backgroundColor: "#C7E9B0",
   },
-  rejectbtn: {
-    backgroundColor: "#FFACAC",
+  acceptedbtn: {
+    backgroundColor: "#F6F1E9",
   },
   container: {
     padding: 24,

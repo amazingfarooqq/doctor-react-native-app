@@ -22,14 +22,14 @@ const OnBoardScreen = () => {
   const handleContinuePress = () => {
     if(!users) return
     const result = users?.find((item) => item.id == phoneNumber);
-
+    console.log({phoneNumber});
+    console.log(result);
     if (!result) {
       navigation.navigate("HomePage");
     } else {
-      console.log(result);
 
       if (result.admin) {
-        navigation.navigate("AdminPage");
+        navigation.navigate("AdminPage", );
       }
 
       if (result.doctor) {
@@ -37,7 +37,7 @@ const OnBoardScreen = () => {
       }
 
       if (result.patient) {
-        navigation.navigate("Chats");
+        navigation.navigate("DoctorCategoriesForPatient", {item: users});
       }
     }
   };
@@ -82,13 +82,6 @@ const OnBoardScreen = () => {
         value={phoneNumber}
         onChangeText={setPhoneNumber}
       />
-
-      {/* <PhoneInput
-        style={styles.phoneNumberInput}
-        country={"pk"}
-        value={phoneNumber}
-        onChange={(e) => console.log(e)}
-      /> */}
       <TouchableOpacity
         style={styles.continueButton}
         onPress={handleContinuePress}>
