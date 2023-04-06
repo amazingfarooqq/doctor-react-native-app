@@ -15,7 +15,6 @@ const DoctorRegisterForm = (props) => {
 
   const { registerToCollection } = useContextAPI()
 
-  const {category, description} = router?.params?.item
 
   const [fullname, onChangeFullName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
@@ -25,7 +24,7 @@ const DoctorRegisterForm = (props) => {
   
   const onSubmit = async () => {
 
-    const formdata = {fullname, email, phoneNumber, category, doctor: true, patient: false}
+    const formdata = {fullname, email, phoneNumber, category: [], doctor: true, patient: false}
 
     await registerToCollection("users", phoneNumber, formdata)
   }
@@ -35,7 +34,7 @@ const DoctorRegisterForm = (props) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Register for {category}</Text>
+          <Text style={styles.title}>Register as a Doctor</Text>
 
         </View>
 

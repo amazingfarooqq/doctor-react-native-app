@@ -18,7 +18,7 @@ const Register = () => {
       </Pressable> */}
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={() => navigation.navigate("RegisterDoctorCategories")}>
+        onPress={() => navigation.navigate("RegisterDoctor")}>
         <Text style={styles.textStyle}>Register as a Doctor</Text>
       </Pressable>
       <Pressable
