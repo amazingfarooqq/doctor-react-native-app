@@ -7,16 +7,16 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { doctorsData } from "../components/data/doctorsdata";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { doctorsData } from "../data/doctorsdata";
+import { useContextAPI } from "../../features/contextapi";
 
-const DoctorsCategories = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+const DoctorCategoriesForPatient = () => {
   const navigation = useNavigation();
-  
+
+  const {users} = useContextAPI()
+
+  const router = useRoute();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -32,7 +32,11 @@ const DoctorsCategories = () => {
             <View key={item.id}>
               <TouchableOpacity
                 style={styles.item}
-                onPress={() => navigation.navigate("RegisterDoctor", {item: item})}>
+                onPress={() => navigation.navigate("PatientPageChats", { filterOutDoctors: users.filter(it => {
+                    if(it.doctor && it.approval && it.category?.includes(item.category)){
+                        return it
+                    }
+                }) })}>
                 <Text style={{ fontSize: 20, color: "white" }}>{item.category}</Text>
                 <Text style={{ fontSize: 16, color: "gray" }}>{item.description} </Text>
               </TouchableOpacity>
@@ -136,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DoctorsCategories;
+export default DoctorCategoriesForPatient;

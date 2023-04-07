@@ -2,7 +2,6 @@ import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ChatScreen from "../screen/ChatScreen";
-import ChatsScreen from "../screen/ChatsScreen";
 import NotImplementedScreen from "../screen/NotImplementedScreen";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 
@@ -14,7 +13,7 @@ const MainTabNavigator = () => {
       <Tab.Screen name="Doctors" component={NotImplementedScreen} options={{tabBarIcon: ({color, size}) => {
         <Ionicons name="logo-whatsapp" size={size} color={color} />
       }}}/>
-      <Tab.Screen name="Chats" component={ChatsScreen} />
+      <Tab.Screen name="Chats" component={NotImplementedScreen} />
       <Tab.Screen name="Register" component={NotImplementedScreen} options={{tabBarIcon: ({color, size}) => {
         <Ionicons name="logo-whatsapp" size={size} color={color} />
       }}}/>

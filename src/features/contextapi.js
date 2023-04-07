@@ -7,7 +7,8 @@ export const useContextAPI = () => useContext(Context);
 
 export const ContextAPIProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-
+  const [currentLoggedInUser, setCurrentLoggedInUser] = useState({});
+  
   const usersFunc = () => {
     const dababaseRef = collection(db, "users");
     getDocs(dababaseRef)
@@ -25,17 +26,22 @@ export const ContextAPIProvider = ({ children }) => {
     usersFunc();
   }, []);
 
-
   const filterUsers = (phn) => {
-    users?.find(item => item.id == phn)
-  }
+    users?.find((item) => item.id == phn);
+  };
 
   const registerToCollection = (collectionName, documentName, dataObject) => {
     return setDoc(doc(db, collectionName, documentName), dataObject);
   };
 
   return (
-    <Context.Provider value={{ registerToCollection, users }}>
+    <Context.Provider
+      value={{
+        registerToCollection,
+        users,
+        currentLoggedInUser,
+        setCurrentLoggedInUser,
+      }}>
       {children}
     </Context.Provider>
   );

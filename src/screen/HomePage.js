@@ -1,10 +1,15 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View, TextInput , Button} from 'react-native';
 
 const Register = () => {
 
   const navigation = useNavigation()
+  const router = useRoute();
+  
+  const {phoneNumber} = router?.params
+
+
 
   return (
     <View style={styles.centeredView}>
@@ -18,12 +23,12 @@ const Register = () => {
       </Pressable> */}
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={() => navigation.navigate("RegisterDoctor")}>
+        onPress={() => navigation.navigate("RegisterDoctor", {phoneNumber: phoneNumber})}>
         <Text style={styles.textStyle}>Register as a Doctor</Text>
       </Pressable>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={() => navigation.navigate("RegisterPatient")}>
+        onPress={() => navigation.navigate("RegisterPatient", {phoneNumber: phoneNumber} )}>
         <Text style={styles.textStyle}>Register as a Patient</Text>
       </Pressable>
     </View>

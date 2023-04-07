@@ -12,32 +12,33 @@ import {
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useContextAPI } from "../features/contextapi";
-
+import logo from "./../../assets/logo.png"
 const OnBoardScreen = () => {
   const navigation = useNavigation();
-  const { users } = useContextAPI();
+  const { users, setCurrentLoggedInUser } = useContextAPI();
 
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleContinuePress = () => {
-    if(!users) return
+    if (!users) return;
     const result = users?.find((item) => item.id == phoneNumber);
-    console.log({phoneNumber});
-    console.log(result);
-    if (!result) {
-      navigation.navigate("HomePage");
-    } else {
 
+    if (!result) {
+      navigation.navigate("HomePage", { phoneNumber });
+    } else {
+      setCurrentLoggedInUser(result);
       if (result.admin) {
-        navigation.navigate("AdminPage", );
+        navigation.navigate("AdminPage", { currentLoggedInUser: result });
       }
 
       if (result.doctor) {
-        // navigation.navigate("HomePage");
+        navigation.navigate("DoctorHome", { currentLoggedInUser: result });
       }
 
       if (result.patient) {
-        navigation.navigate("DoctorCategoriesForPatient", {item: users});
+        navigation.navigate("DoctorCategoriesForPatient", {
+          currentLoggedInUser: result,
+        });
       }
     }
   };

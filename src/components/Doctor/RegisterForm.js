@@ -9,33 +9,48 @@ import {
   TextInput,
 } from "react-native";
 import { useContextAPI } from "../../features/contextapi";
+import { Picker } from "react-native";
+import { doctorsData } from "../data/doctorsdata";
+import { Ionicons } from "@expo/vector-icons"; // or any other icon library you prefer
 
 const DoctorRegisterForm = (props) => {
   const router = useRoute();
 
-  const { registerToCollection } = useContextAPI()
+  const { phoneNumber } = router?.params;
 
+  const { registerToCollection } = useContextAPI();
 
   const [fullname, onChangeFullName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
-  const [phoneNumber, onChangePhoneNumber] = useState("")
-
-
-  
+  // const [phoneNumber, onChangePhoneNumber] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  console.log({ selectedCategories });
   const onSubmit = async () => {
+    const formdata = {
+      fullname,
+      email,
+      phoneNumber,
+      category: selectedCategories,
+      chats: [{ fullname: "farooq", age: 13, phoneNumber: "111" }],
+      doctor: true,
+      patient: false,
+      admin: false,
+    };
 
-    const formdata = {fullname, email, phoneNumber, category: [], doctor: true, patient: false}
+    await registerToCollection("users", phoneNumber, formdata);
+  };
 
-    await registerToCollection("users", phoneNumber, formdata)
-  }
+  const [text, setText] = useState("");
 
+  const handleClear = () => {
+    setText("");
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Register as a Doctor</Text>
-
         </View>
 
         <View style={styles.form}>
@@ -56,20 +71,42 @@ const DoctorRegisterForm = (props) => {
               placeholder=""
             />
           </View>
+          {selectedCategories.length > 0 && 
+          <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
+            {selectedCategories.map(item => {
+              return (
+                <View style={{ flexDirection: "row", alignItems: "center",margin: "2px", padding: "2px", borderRadius: "5px", backgroundColor: "#ECF9FF" }}>
+                  <Text>{item} </Text>
+                  <TouchableOpacity onPress={() => {
+                    setSelectedCategories(selectedCategories.filter((cat) =>  cat !== item))
+                  }}>
+                    <Text>X</Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            })}
+          </View>
+          }
           <View style={styles.input}>
-            <Text style={styles.inputLabel}>Phone number</Text>
-            <TextInput
-              style={styles.inputControl}
-              onChangeText={onChangePhoneNumber}
-              value={phoneNumber}
-              placeholder=""
-              keyboardType="numeric"
-            />
+            <Text style={styles.inputLabel}>Select Category</Text>
+            <Picker
+              selectedValue={selectedCategories}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedCategories([...selectedCategories, itemValue])
+              }>
+              <Picker.Item label="Select a category" value="" />
+              {doctorsData.map((category) => (
+                <Picker.Item
+                  key={category.id}
+                  label={category.category}
+                  value={category.category}
+                />
+              ))}
+            </Picker>
           </View>
 
           <View style={styles.formAction}>
-            <TouchableOpacity
-              onPress={onSubmit}>
+            <TouchableOpacity onPress={onSubmit}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>Register</Text>
               </View>

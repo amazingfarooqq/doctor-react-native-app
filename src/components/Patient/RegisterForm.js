@@ -11,31 +11,32 @@ import {
 import { useContextAPI } from "../../features/contextapi";
 
 const PatientRegisterForm = (props) => {
-  const router = useRoute();
-
-  const { registerToCollection } = useContextAPI()
-
+  const { registerToCollection } = useContextAPI();
 
   const [fullname, onChangeFullName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
-  const [phoneNumber, onChangePhoneNumber] = useState("")
 
+  const router = useRoute();
+  const { phoneNumber } = router?.params;
 
-  
   const onSubmit = async () => {
+    const formdata = {
+      fullname,
+      email,
+      phoneNumber,
+      doctor: false,
+      patient: true,
+      admin: false,
+    };
 
-    const formdata = {fullname, email, phoneNumber, doctor: false, patient: true }
-
-    await registerToCollection("users", phoneNumber, formdata)
-  }
-
+    await registerToCollection("users", phoneNumber, formdata);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Register as Patient</Text>
-
         </View>
 
         <View style={styles.form}>
@@ -56,20 +57,9 @@ const PatientRegisterForm = (props) => {
               placeholder=""
             />
           </View>
-          <View style={styles.input}>
-            <Text style={styles.inputLabel}>Phone number</Text>
-            <TextInput
-              style={styles.inputControl}
-              onChangeText={onChangePhoneNumber}
-              value={phoneNumber}
-              placeholder=""
-              keyboardType="numeric"
-            />
-          </View>
 
           <View style={styles.formAction}>
-            <TouchableOpacity
-              onPress={onSubmit}>
+            <TouchableOpacity onPress={onSubmit}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>Register</Text>
               </View>

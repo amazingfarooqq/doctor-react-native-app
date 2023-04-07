@@ -1,8 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Navigator from './src/navigate';
-import ChatScreen from './src/screen/ChatScreen';
-import ChatsScreen from './src/screen/ChatsScreen';
 import { ContextAPIProvider } from './src/features/contextapi';
 
 export default function App() {
@@ -21,8 +19,6 @@ export default function App() {
   return (
     <ContextAPIProvider>
       <View style={styles.container}>
-        {/* <ChatsScreen /> */}
-        {/* <ChatScreen /> */}
 
         <Navigator />
 

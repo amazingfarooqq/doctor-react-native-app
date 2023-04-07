@@ -1,10 +1,9 @@
 import React from "react";
 import { View, Text, FlatList } from "react-native";
-import chats from "./../../assets/data/chats.json";
-import ChatListItem from "../components/ChatListItem";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ChatListItem from "./ChatListItem";
 
-const ChatsScreen = () => {
+const PatientPageChats = () => {
   const navigation = useNavigation();
 
   const router = useRoute()
@@ -21,4 +20,4 @@ const ChatsScreen = () => {
   );
 };
 
-export default ChatsScreen;
+export default PatientPageChats;
