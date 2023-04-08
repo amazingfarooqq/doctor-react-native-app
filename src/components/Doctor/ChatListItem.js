@@ -24,7 +24,7 @@ const ChatListItem = ({
 
   return (
     <Pressable
-      onPress={() => navigation.navigate("Chat", { name: item.fullname })}
+      onPress={() => navigation.navigate("DoctorChat", { name: item.fullname })}
       style={styles.container}>
       <Image
         source={{

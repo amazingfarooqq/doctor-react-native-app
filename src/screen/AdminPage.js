@@ -9,22 +9,34 @@ import {
   TextInput,
 } from "react-native";
 import { useContextAPI } from "../features/contextapi";
-const data = [
-  { name: "John", category: "Sales", details: "Lorem ipsum dolor sit amet" },
-  {
-    name: "Mary",
-    category: "Marketing",
-    details: "Consectetur adipiscing elit",
-  },
-  {
-    name: "Bob",
-    category: "Engineering",
-    details: "Sed do eiusmod tempor incididunt",
-  },
-];
+import { db } from "../features/firebaseauth";
+import { doc, updateDoc } from "firebase/firestore";
+
+
 
 const AdminPage = () => {
-  const { users } = useContextAPI();
+  const { users, setUsers } = useContextAPI();
+
+  
+const acceptUser = async (docId) => {
+  try {
+    const docRef = doc(db, "users", docId);
+    await updateDoc(docRef, { approval: true });
+    const newList = users.map(item => {
+      if(item.id == docId){
+        return {...item, approval: true}
+      }else {
+        return item
+      }
+      
+    })
+    console.log({newList});
+    setUsers(newList)
+    console.log("Document updated successfully");
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+};
 
   console.log({ users });
   return (
@@ -54,10 +66,10 @@ const AdminPage = () => {
                     <Text style={styles.cell}>{user.email}</Text>
                     <Text style={styles.cell}>{user.phoneNumber}</Text>
                     <View style={styles.cell}>
-                      {user.approval ?
+                      {!user.approval ?
                       <Pressable
                         style={[styles.button, styles.acceptbtn]}
-                        onPress={() => {}}>
+                        onPress={() => acceptUser(user.id)}>
                         <Text style={styles.acceptbtn}>Accept</Text>
                       </Pressable> :
                       <Pressable

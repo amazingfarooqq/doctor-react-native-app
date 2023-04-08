@@ -12,6 +12,8 @@ import AdminPage from "../screen/AdminPage";
 import DoctorCategoriesForPatient from "../components/Patient/DoctorCategoriesForPatient";
 import DoctorHome from "../components/Doctor/DoctorHome";
 import PatientPageChats from "../components/Patient/PatientPageChats";
+import PatientChat from "../components/Patient/PatientChat";
+import DoctorChat from "../components/Doctor/DoctorChat";
 
 const Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -30,14 +32,16 @@ const Navigator = () => {
         <Stack.Screen name="RegisterDoctor" component={DoctorRegisterForm} />
 
         <Stack.Screen name="DoctorHome" component={DoctorHome} options={{ headerShown: false }}/>
+        <Stack.Screen name="DoctorChat" component={DoctorChat} />
 
         <Stack.Screen name="RegisterPatient" component={PatientRegisterForm} options={{ headerShown: false }} />
         <Stack.Screen name="DoctorCategoriesForPatient" component={DoctorCategoriesForPatient} options={{ headerShown: false }} />
         <Stack.Screen name="PatientPageChats" component={PatientPageChats} />
+        <Stack.Screen name="PatientChat" component={PatientChat} />
         
-        <Stack.Screen name="Chat" component={ChatScreen} />
 
         <Stack.Screen name="Home" component={MainTabNavigator} options={{ headerShown: false }} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

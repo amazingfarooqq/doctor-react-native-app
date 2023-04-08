@@ -39,6 +39,7 @@ export const ContextAPIProvider = ({ children }) => {
       value={{
         registerToCollection,
         users,
+        setUsers,
         currentLoggedInUser,
         setCurrentLoggedInUser,
       }}>

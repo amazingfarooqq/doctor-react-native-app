@@ -7,9 +7,15 @@ import ChatListItem from "./ChatListItem";
 const Chats = () => {
   const navigation = useNavigation();
 
-  const router = useRoute();
-  const {currentLoggedInUser: {chats}} = router?.params;
-  console.log({ chats });
+  const {currentLoggedInUser} = useContextAPI()
+
+  const { chats } = currentLoggedInUser
+
+  console.log({chats});
+
+  // const router = useRoute();
+  // const {currentLoggedInUser: {chats}} = router?.params;
+  // console.log({ chats });
 
   return (
     <>
