@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 // import { SafeAreaView } from "react-native-safe-area-context";
 
-const InputBox = () => {
+const InputBox = ({sendMessage}) => {
   const [text, setText] = useState("");
   const [files, setFiles] = useState([]);
   const [progresses, setProgresses] = useState({});
 
 
   const onSend = () => {
-    console.log("send")
+    sendMessage()
   }
 
   const pickImage = () => {

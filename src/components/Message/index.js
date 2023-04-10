@@ -16,6 +16,9 @@ const Message = ({message}) => {
       isMyMessage()
     }, [])
   return (
+    <>
+    <Text>
+    </Text>
     <View
       style={[
         styles.container,
@@ -38,6 +41,7 @@ const Message = ({message}) => {
       <Text>{message.text}</Text>
       <Text style={styles.time}>{dayjs(message.createdAt).fromNow(true)}</Text>
     </View>
+    </>
   )
 }
 

@@ -31,7 +31,6 @@ const DoctorRegisterForm = (props) => {
       email,
       phoneNumber,
       category: selectedCategories,
-      chats: [{ fullname: "farooq", age: 13, phoneNumber: "111" }],
       doctor: true,
       patient: false,
       admin: false,
