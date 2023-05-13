@@ -9,37 +9,48 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import { useContextAPI } from "../features/contextapi";
-import logo from "./../../assets/logo.png"
+import logo from "./../../assets/logo.png";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../features/firebaseauth";
 const OnBoardScreen = () => {
   const navigation = useNavigation();
   const { users, setCurrentLoggedInUser } = useContextAPI();
 
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const handleContinuePress = () => {
-    if (!users) return;
-    const result = users?.find((item) => item.id == phoneNumber);
+  const handleContinuePress = async () => {
+    try {
+      const docRef = doc(db, "users", phoneNumber); // Replace 'your-collection-name' with the actual name of your collection
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const documentId = docSnap.id; // Get the document ID
 
-    if (!result) {
-      navigation.navigate("HomePage", { phoneNumber });
-    } else {
-      setCurrentLoggedInUser(result);
-      if (result.admin) {
-        navigation.navigate("AdminPage", { currentLoggedInUser: result });
-      }
+        setCurrentLoggedInUser({ ...data, id: documentId }); // Include document ID in the currentLoggedInUser object
 
-      if (result.doctor) {
-        navigation.navigate("DoctorHome", { currentLoggedInUser: result });
-      }
 
-      if (result.patient) {
-        navigation.navigate("DoctorCategoriesForPatient", {
-          currentLoggedInUser: result,
-        });
+        console.log({ data });
+        if (data.admin) {
+          navigation.navigate("AdminPage", { currentLoggedInUser: data });
+        }
+
+        if (data.doctor) {
+          navigation.navigate("DoctorHome", { currentLoggedInUser: data });
+        }
+
+        if (data.patient) {
+          navigation.navigate("DoctorCategoriesForPatient", {
+            currentLoggedInUser: data,
+          });
+        }
+
+      } else {
+        console.log("Document does not exist!");
+        navigation.navigate("HomePage", { phoneNumber });
       }
+    } catch (error) {
+      console.log({error});
     }
   };
 

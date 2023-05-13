@@ -16,13 +16,16 @@ import { useContextAPI } from "../../features/contextapi";
 const PatientChat = () => {
   console.log({ messages });
 
+
+  const router = useRoute();
+  const currentuser = router.params
+  const navigation = useNavigation();
   const {currentLoggedInUser} =  useContextAPI()
 
-
-  console.log({currentLoggedInUser});
+  console.log({ routerparams: router.params });
 
   const dummy = useRef();
-  const messagesRef = collection(db, "messages");
+  const messagesRef = collection(db, `${currentLoggedInUser.id}with${currentuser.id}`);
   const queryyy = query(messagesRef, orderBy("createdAt", "desc"));
 
   const [messages, loading, error] = useCollection(queryyy, { idField: "id" });
@@ -40,11 +43,6 @@ const PatientChat = () => {
   }, [messages]);
 
 
-  const router = useRoute();
-  const currentuser = router.params
-  const navigation = useNavigation();
-
-  console.log({ routerparams: router.params });
 
   useEffect(() => {
     navigation.setOptions({ title: router.params.fullname });
@@ -70,6 +68,9 @@ const PatientChat = () => {
 
 
 const InputBox = ({currentuser}) => {
+  const {currentLoggedInUser} =  useContextAPI()
+
+  console.log({currentLoggedInUser, currentuser});
   const [text, setText] = useState("");
   const [files, setFiles] = useState([]);
   const [progresses, setProgresses] = useState({});
@@ -77,7 +78,7 @@ const InputBox = ({currentuser}) => {
 
   const onSend = async () => {
       // const { uid, photoURL } = auth.currentUser;
-      const messagesRef = collection(db, "messages", `${currentuser.id}with`);
+      const messagesRef = collection(db, `${currentLoggedInUser.id}with${currentuser.id}`);
       await addDoc(messagesRef, {
         text:text,
         createdAt: serverTimestamp(),

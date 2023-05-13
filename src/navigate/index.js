@@ -14,6 +14,7 @@ import DoctorHome from "../components/Doctor/DoctorHome";
 import PatientPageChats from "../components/Patient/PatientPageChats";
 import PatientChat from "../components/Patient/PatientChat";
 import DoctorChat from "../components/Doctor/DoctorChat";
+import TestChat from "../screen/TestChat";
 
 const Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -23,7 +24,7 @@ const Navigator = () => {
       <Stack.Navigator
         screenOptions={{ headerStyle: { backgroundColor: "whitesmoke" } }}>
           
-        <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} options={{ headerShown: false, title: 'Welcome to DrClinico' }} />
         <Stack.Screen name="HomePage" component={HomePage} options={{ headerShown: false }} />
 
 
@@ -35,9 +36,10 @@ const Navigator = () => {
         <Stack.Screen name="DoctorChat" component={DoctorChat} />
 
         <Stack.Screen name="RegisterPatient" component={PatientRegisterForm} options={{ headerShown: false }} />
-        <Stack.Screen name="DoctorCategoriesForPatient" component={DoctorCategoriesForPatient} options={{ headerShown: false }} />
-        <Stack.Screen name="PatientPageChats" component={PatientPageChats} />
+        <Stack.Screen name="DoctorCategoriesForPatient" component={DoctorCategoriesForPatient} options={{ title: 'Doctor Categories' }}/>
+        <Stack.Screen name="PatientPageChats" component={PatientPageChats}  options={{ title: 'Doctors' }}/>
         <Stack.Screen name="PatientChat" component={PatientChat} />
+        <Stack.Screen name="TestChat" component={TestChat} />
         
 
         <Stack.Screen name="Home" component={MainTabNavigator} options={{ headerShown: false }} />
