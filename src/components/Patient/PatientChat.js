@@ -5,7 +5,7 @@ import messages from "./../../../assets/data/messages.json";
 import { KeyboardAvoidingView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useRef, useState } from "react";
-import {collection,addDoc,serverTimestamp,orderBy,getDocs,query,limit} from "firebase/firestore";
+import {collection,addDoc,serverTimestamp,orderBy,getDocs,query,limit, updateDoc, getDoc, doc} from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import ReactDOM from "react-dom";
 import { db } from "../../features/firebaseauth";
@@ -18,14 +18,15 @@ const PatientChat = () => {
 
 
   const router = useRoute();
-  const currentuser = router.params
+  const currentDoctor = router.params
+
   const navigation = useNavigation();
-  const {currentLoggedInUser} =  useContextAPI()
+  const {currentLoggedInUser, setCurrentLoggedInUser} =  useContextAPI()
 
-  console.log({ routerparams: router.params });
-
+  console.log({currentLoggedInUser});
+  console.log({currentDoctor});
   const dummy = useRef();
-  const messagesRef = collection(db, `${currentLoggedInUser.id}with${currentuser.id}`);
+  const messagesRef = collection(db, `${currentLoggedInUser.phoneNumber}with${currentDoctor.phoneNumber}`);
   const queryyy = query(messagesRef, orderBy("createdAt", "desc"));
 
   const [messages, loading, error] = useCollection(queryyy, { idField: "id" });
@@ -48,6 +49,31 @@ const PatientChat = () => {
     navigation.setOptions({ title: router.params.fullname });
   }, [router.params.name]);
 
+
+  const handleMessage = async (text) => {
+    
+    
+    console.log({currentLoggedInUser});
+    if (!currentLoggedInUser.doctors.includes(currentDoctor.id)) {
+      const patSnapshot = doc(db, "users", currentLoggedInUser.id);
+      const updatedDoctors = [...currentLoggedInUser.doctors, currentDoctor.id];
+      await updateDoc(patSnapshot, { doctors: updatedDoctors });
+      setCurrentLoggedInUser({ ...currentLoggedInUser, doctors: updatedDoctors });
+    }
+
+    if (!currentDoctor.doctors.includes(currentLoggedInUser.id)) {
+      const docSnapshot = await getDoc(doc(db, "users", currentDoctor.id));
+      const previousDataOfDoctor = docSnapshot.data();
+    
+      if (!previousDataOfDoctor.patients.includes(currentLoggedInUser.id)) {
+        const updatedPatients = [...previousDataOfDoctor.patients, currentLoggedInUser.id];
+        await updateDoc(docSnapshot.ref, { patients: updatedPatients });
+      }
+    }
+  
+    await addDoc(messagesRef, { text, createdAt: serverTimestamp(), uid: currentLoggedInUser.id });
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -56,38 +82,27 @@ const PatientChat = () => {
       <ImageBackground source={bg} style={styles.bg}>
         <FlatList
           data={allmsgs}
-          renderItem={({ item }) => <Message message={item} currentuser={currentuser}/>}
+          renderItem={({ item }) => <Message message={item} />}
           inverted
         />
         <Text ref={dummy}></Text>
       </ImageBackground>
-      <InputBox chatroom={messages} currentuser={currentuser}/>
+      <InputBox handleMessage={handleMessage}/>
     </KeyboardAvoidingView>
   );
 };
 
 
-const InputBox = ({currentuser}) => {
-  const {currentLoggedInUser} =  useContextAPI()
-
-  console.log({currentLoggedInUser, currentuser});
+const InputBox = ({handleMessage}) => {
   const [text, setText] = useState("");
   const [files, setFiles] = useState([]);
   const [progresses, setProgresses] = useState({});
 
-
-  const onSend = async () => {
-      // const { uid, photoURL } = auth.currentUser;
-      const messagesRef = collection(db, `${currentLoggedInUser.id}with${currentuser.id}`);
-      await addDoc(messagesRef, {
-        text:text,
-        createdAt: serverTimestamp(),
-        uid: "213",
-        photoURL: "@!#",
-      });
-  
-      // setFormValue("");
-      // ReactDOM.findDOMNode(dummy.current).scrollIntoView({ behavior: "smooth" });
+  const onSend = () => {
+    if (text.trim().length > 0) {
+      handleMessage(text.trim());
+      setText("");
+    }
   }
 
   const pickImage = () => {
@@ -131,10 +146,11 @@ const Message = ({message}) => {
   const [isMe, setIsMe] = useState(true);
   const [downloadAttachments, setDownloadedAttachments] = useState([]);
 
-    console.log({message});
+  const {currentLoggedInUser} = useContextAPI()
+
 
     const isMyMessage = async () => {
-      setIsMe(message.uid === "213");
+      setIsMe(message.uid ===currentLoggedInUser.id);
     };
 
     useEffect(()=> {

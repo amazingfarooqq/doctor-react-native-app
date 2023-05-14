@@ -1,7 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ChatScreen from "../screen/ChatScreen";
 import NotImplementedScreen from "../screen/NotImplementedScreen";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 

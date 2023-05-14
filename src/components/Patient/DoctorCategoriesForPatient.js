@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { doctorsData } from "../data/doctorsdata";
@@ -20,11 +21,12 @@ const DoctorCategoriesForPatient = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Select Doctor Category</Text>
 
-          <Text style={styles.subtitle}>Sign in to your account</Text>
+          {/* <Text style={styles.subtitle}>Sign in to your account</Text> */}
         </View>
 
         {doctorsData.map((item) => {
@@ -45,7 +47,10 @@ const DoctorCategoriesForPatient = () => {
         })}
         
       </View>
+    </ScrollView>
     </SafeAreaView>
+
+
   );
 };
 

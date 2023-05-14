@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import bg from "./../../assets/images/BG.png";
 import messages from "./../../assets/data/messages.json";
-import Message from "../components/Message";
 import { KeyboardAvoidingView } from "react-native";
 import InputBox from "../components/InputBox";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -30,11 +29,11 @@ const ChatScreen = () => {
       keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 90}
       style={styles.bg}>
       <ImageBackground source={bg} style={styles.bg}>
-        <FlatList
+        {/* <FlatList
           data={messages}
           renderItem={({ item }) => <Message message={item} />}
           inverted
-        />
+        /> */}
       </ImageBackground>
       <InputBox chatroom={messages} />
     </KeyboardAvoidingView>

@@ -32,15 +32,15 @@ const OnBoardScreen = () => {
 
         console.log({ data });
         if (data.admin) {
-          navigation.navigate("AdminPage", { currentLoggedInUser: data });
+          navigation.replace("AdminPage", { currentLoggedInUser: data });
         }
 
         if (data.doctor) {
-          navigation.navigate("DoctorHome", { currentLoggedInUser: data });
+          navigation.replace("DoctorHome", { currentLoggedInUser: data });
         }
 
         if (data.patient) {
-          navigation.navigate("DoctorCategoriesForPatient", {
+          navigation.replace("DoctorCategoriesForPatient", {
             currentLoggedInUser: data,
           });
         }

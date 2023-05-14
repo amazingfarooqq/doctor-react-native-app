@@ -18,13 +18,13 @@ const ChatListItem = ({
 
   const { item } = chat;
 
-  chat = {};
+  console.log({item});
 
   const navigation = useNavigation();
 
   return (
     <Pressable
-      onPress={() => navigation.navigate("DoctorChat", { name: item.fullname })}
+      onPress={() => navigation.navigate("DoctorChat", item)}
       style={styles.container}>
       <Image
         source={{
@@ -39,7 +39,7 @@ const ChatListItem = ({
         </Text>
 
         <Text numberOfLines={2} style={styles.subTitle}>
-          {item?.age}
+          {item?.phoneNumber}
         </Text>
       </View>
       {selectable &&

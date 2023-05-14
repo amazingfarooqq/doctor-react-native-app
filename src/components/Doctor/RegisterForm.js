@@ -34,6 +34,8 @@ const DoctorRegisterForm = (props) => {
       doctor: true,
       patient: false,
       admin: false,
+      patients: [],
+      doctors: []
     };
 
     await registerToCollection("users", phoneNumber, formdata);

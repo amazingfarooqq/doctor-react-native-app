@@ -15,8 +15,7 @@ const ChatListItem = ({
   isSelected = false,
 }) => {
   const { item } = filteredDoctor;
-
-
+  console.log({item});
 
   const navigation = useNavigation();
 
@@ -25,7 +24,7 @@ const ChatListItem = ({
   return (
     <Pressable
       onPress={() =>
-        navigation.navigate("PatientChat", { id: item.id, fullname: item.fullname, item })
+        navigation.navigate("PatientChat", item)
       }
       style={styles.container}>
       <Image source={{ uri: "https://wallpapers.com/images/hd/aesthetic-profile-picture-nybkp4c7hgasdo5j.jpg" }} style={styles.image} />
