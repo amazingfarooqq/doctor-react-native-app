@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Pressable,
 } from "react-native";
 import { useContextAPI } from "../../features/contextapi";
 
@@ -15,6 +16,7 @@ const PatientRegisterForm = (props) => {
 
   const [fullname, onChangeFullName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
+  const [houseAddress, setHouseAddress] = useState("")
 
   const router = useRoute();
   const { phoneNumber } = router?.params;
@@ -23,6 +25,7 @@ const PatientRegisterForm = (props) => {
     const formdata = {
       fullname,
       email,
+      houseAddress,
       phoneNumber,
       doctor: false,
       patient: true,
@@ -33,6 +36,9 @@ const PatientRegisterForm = (props) => {
 
     await registerToCollection("users", phoneNumber, formdata);
   };
+
+  const navigation = useNavigation();
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -58,6 +64,21 @@ const PatientRegisterForm = (props) => {
               value={email}
               placeholder=""
             />
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>House Address</Text>
+            <TextInput
+              style={styles.inputControl}
+              onChangeText={setHouseAddress}
+              value={houseAddress}
+              placeholder=""
+            />
+          </View>
+
+          <View>
+            <Text>By Clicking Register, you agree to  </Text>
+            
+            <Pressable onPress={() => navigation.navigate("DoctorTermsAndConditions")} style={{color:"skyblue"}}>Terms and Conditions</Pressable>
           </View>
 
           <View style={styles.formAction}>

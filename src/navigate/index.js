@@ -10,12 +10,13 @@ import DoctorRegisterForm from "../components/Doctor/RegisterForm";
 import OnBoardScreen from "../screen/OnBoardScreen";
 import AdminPage from "../screen/AdminPage";
 import DoctorCategoriesForPatient from "../components/Patient/DoctorCategoriesForPatient";
-import DoctorHome from "../components/Doctor/DoctorHome";
 import PatientPageChats from "../components/Patient/PatientPageChats";
 import PatientChat from "../components/Patient/PatientChat";
 import DoctorChat from "../components/Doctor/DoctorChat";
 import TestChat from "../screen/TestChat";
 import PatientBottomNavigator from "../components/Patient/PatientBottomNavigator";
+import DoctorNavigator from "../components/Doctor/DoctorNavigator";
+import DoctorTermsAndConditions from "../components/Doctor/DoctorTermsAndConditions";
 
 const Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -37,17 +38,17 @@ const Navigator = () => {
 
 
         {/* register doctor form */}
-        <Stack.Screen name="RegisterDoctor" component={DoctorRegisterForm} />
+        <Stack.Screen name="RegisterDoctor" component={DoctorRegisterForm}options={{title: 'Register as Doctor' }} />
 
         {/* registered doctor */}
-        <Stack.Screen name="DoctorHome" component={DoctorHome}/>
-        <Stack.Screen name="DoctorChat" component={DoctorChat} />
+        <Stack.Screen name="DoctorNavigator" component={DoctorNavigator} options={{ headerShown: false }}/>
+        <Stack.Screen name="DoctorTermsAndConditions" component={DoctorTermsAndConditions} options={{title: 'Terms and Conditions' }}/>
 
         {/* register patient form */}
-        <Stack.Screen name="RegisterPatient" component={PatientRegisterForm} options={{ headerShown: false }} />
+        <Stack.Screen name="RegisterPatient" component={PatientRegisterForm} options={{title: 'Register as Patient' }} />
 
         {/* registered patient */}
-        <Stack.Screen name="DoctorCategoriesForPatient" component={PatientBottomNavigator} options={{ headerShown: false }}/>
+        <Stack.Screen name="PatientNavigator" component={PatientBottomNavigator} options={{ headerShown: false }}/>
         <Stack.Screen name="PatientPageChats" component={PatientPageChats}  options={{ title: 'Doctors' }}/>
         <Stack.Screen name="PatientChat" component={PatientChat} />
         

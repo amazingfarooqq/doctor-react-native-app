@@ -6,7 +6,7 @@ import ChatListItem from "./ChatListItem";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { db } from "../../features/firebaseauth";
 
-const Chats = () => {
+const DoctorChats = () => {
   const navigation = useNavigation();
 
   const {currentLoggedInUser} = useContextAPI()
@@ -57,13 +57,13 @@ const Chats = () => {
   // console.log({ chats });
 
   return (
-    <>
+    <View>
       <FlatList
         data={patients}
         renderItem={(item) => <ChatListItem chat={item} />}
       />
-    </>
+    </View>
   );
 };
 
-export default Chats;
+export default DoctorChats;

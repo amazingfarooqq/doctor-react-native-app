@@ -26,7 +26,7 @@ const PatientChat = () => {
   console.log({currentLoggedInUser});
   console.log({currentDoctor});
   const dummy = useRef();
-  const messagesRef = collection(db, `${currentLoggedInUser.phoneNumber}with${currentDoctor.phoneNumber}`);
+  const messagesRef = collection(db, `${currentLoggedInUser.id}with${currentDoctor.id}`);
   const queryyy = query(messagesRef, orderBy("createdAt", "desc"));
 
   const [messages, loading, error] = useCollection(queryyy, { idField: "id" });
@@ -61,7 +61,7 @@ const PatientChat = () => {
       setCurrentLoggedInUser({ ...currentLoggedInUser, doctors: updatedDoctors });
     }
 
-    if (!currentDoctor.doctors.includes(currentLoggedInUser.id)) {
+    if (!currentDoctor.patients.includes(currentLoggedInUser.id)) {
       const docSnapshot = await getDoc(doc(db, "users", currentDoctor.id));
       const previousDataOfDoctor = docSnapshot.data();
     

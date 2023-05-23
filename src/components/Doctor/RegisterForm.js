@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/native";
+import { Link, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Pressable,
 } from "react-native";
 import { useContextAPI } from "../../features/contextapi";
 import { Picker } from "react-native";
@@ -22,6 +23,7 @@ const DoctorRegisterForm = (props) => {
 
   const [fullname, onChangeFullName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
+  const [houseAddress, setHouseAddress] = useState("")
   // const [phoneNumber, onChangePhoneNumber] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   console.log({ selectedCategories });
@@ -30,6 +32,7 @@ const DoctorRegisterForm = (props) => {
       fullname,
       email,
       phoneNumber,
+      houseAddress,
       category: selectedCategories,
       doctor: true,
       patient: false,
@@ -46,6 +49,8 @@ const DoctorRegisterForm = (props) => {
   const handleClear = () => {
     setText("");
   };
+
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -69,6 +74,16 @@ const DoctorRegisterForm = (props) => {
               style={styles.inputControl}
               onChangeText={onChangeEmail}
               value={email}
+              placeholder=""
+            />
+          </View>
+          
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>House Address</Text>
+            <TextInput
+              style={styles.inputControl}
+              onChangeText={setHouseAddress}
+              value={houseAddress}
               placeholder=""
             />
           </View>
@@ -104,6 +119,12 @@ const DoctorRegisterForm = (props) => {
                 />
               ))}
             </Picker>
+          </View>
+
+          <View>
+            <Text>By Clicking Register, you agree to  </Text>
+            
+            <Pressable onPress={() => navigation.navigate("DoctorTermsAndConditions")} style={{color:"skyblue"}}>Terms and Conditions</Pressable>
           </View>
 
           <View style={styles.formAction}>

@@ -36,11 +36,11 @@ const OnBoardScreen = () => {
         }
 
         if (data.doctor) {
-          navigation.replace("DoctorHome", { currentLoggedInUser: data });
+          navigation.replace("DoctorNavigator", { currentLoggedInUser: data });
         }
 
         if (data.patient) {
-          navigation.replace("DoctorCategoriesForPatient", {
+          navigation.replace("PatientNavigator", {
             currentLoggedInUser: data,
           });
         }

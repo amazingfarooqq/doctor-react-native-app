@@ -1,19 +1,18 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, Entypo } from "@expo/vector-icons";
 import NotImplementedScreen from "../../screen/NotImplementedScreen";
-import DoctorCategoriesForPatient from "./DoctorCategoriesForPatient";
-import DoctorsList from "./DoctorsList";
+import DoctorChats from "./DoctorChats";
+import ContactTab from "./DoctorSettings";
 
-const PatientBottomNavigator = () => {
+const DoctorNavigator = () => {
+
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator initialRouteName="DoctorsList"  screenOptions={{ headerStyle: { backgroundColor: "whitesmoke" } }}>
-      <Tab.Screen name="DoctorCategoriesForPatient" component={DoctorCategoriesForPatient} options={{ title: 'Catogories' }}/>
-      <Tab.Screen name="DoctorsList" component={DoctorsList} options={{ title: 'Chats' }}/>
-      <Tab.Screen name="Settings" component={NotImplementedScreen} options={{ title: 'Settings' }}/>
+    <Tab.Navigator initialRouteName="Chats"  screenOptions={{ headerStyle: { backgroundColor: "whitesmoke" } }}>
+      <Tab.Screen name="Chats" component={DoctorChats} options={{ title: 'Chats' }}/>
+      <Tab.Screen name="Settings" component={ContactTab} options={{ title: 'Settings' }}/>
       {/* <Tab.Screen name="Register" component={NotImplementedScreen} options={{tabBarIcon: ({color, size}) => {
         <Ionicons name="logo-whatsapp" size={size} color={color} />
       }}}/>
@@ -24,4 +23,4 @@ const PatientBottomNavigator = () => {
   );
 };
 
-export default PatientBottomNavigator;
+export default DoctorNavigator;
