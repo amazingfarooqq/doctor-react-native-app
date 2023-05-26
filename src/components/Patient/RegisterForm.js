@@ -30,11 +30,14 @@ const PatientRegisterForm = (props) => {
       doctor: false,
       patient: true,
       admin: false,
+      emergency: false,
       patients: [],
       doctors: []
     };
 
     await registerToCollection("users", phoneNumber, formdata);
+    navigation.replace("PatientBottomNavigator", { currentLoggedInUser: formdata });
+
   };
 
   const navigation = useNavigation();

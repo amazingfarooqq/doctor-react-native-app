@@ -1,14 +1,36 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View, TextInput , Button} from 'react-native';
+import { useContextAPI } from '../features/contextapi';
 
 const Register = () => {
 
   const navigation = useNavigation()
+  const {registerToCollection} = useContextAPI()
   const router = useRoute();
   
   const {phoneNumber} = router?.params
 
+
+  const EmergencyBtn = async () => {
+
+    const data = {
+      fullname: `Emergency Contact - ${phoneNumber}`,
+      email: "",
+      houseAddress: "",
+      phoneNumber,
+      doctor: false,
+      patient: false,
+      admin: false,
+      emergency: true,
+      patients: [],
+      doctors: []
+    };
+
+    
+    // await registerToCollection("users", phoneNumber, data);
+    navigation.navigate("PatientNavigator", {currentLoggedInUser: data})
+  }
 
 
   return (
@@ -21,6 +43,11 @@ const Register = () => {
         onPress={() => setModalVisible(true)}>
         <Text style={styles.textStyle}>Emergency for patient</Text>
       </Pressable> */}
+       <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={EmergencyBtn}>
+        <Text style={styles.textStyle}>Emergency Contact</Text>
+      </Pressable>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => navigation.navigate("RegisterDoctor", {phoneNumber: phoneNumber})}>
@@ -31,6 +58,7 @@ const Register = () => {
         onPress={() => navigation.navigate("RegisterPatient", {phoneNumber: phoneNumber} )}>
         <Text style={styles.textStyle}>Register as a Patient</Text>
       </Pressable>
+
     </View>
   );
 };

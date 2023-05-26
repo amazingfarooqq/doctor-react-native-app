@@ -8,15 +8,12 @@ import HomePage from "../screen/HomePage";
 import PatientRegisterForm from "../components/Patient/RegisterForm";
 import DoctorRegisterForm from "../components/Doctor/RegisterForm";
 import OnBoardScreen from "../screen/OnBoardScreen";
-import AdminPage from "../screen/AdminPage";
-import DoctorCategoriesForPatient from "../components/Patient/DoctorCategoriesForPatient";
 import PatientPageChats from "../components/Patient/PatientPageChats";
 import PatientChat from "../components/Patient/PatientChat";
-import DoctorChat from "../components/Doctor/DoctorChat";
-import TestChat from "../screen/TestChat";
 import PatientBottomNavigator from "../components/Patient/PatientBottomNavigator";
 import DoctorNavigator from "../components/Doctor/DoctorNavigator";
 import DoctorTermsAndConditions from "../components/Doctor/DoctorTermsAndConditions";
+import AdminNavigator from "../components/Admin/AdminNavigator";
 
 const Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -34,7 +31,7 @@ const Navigator = () => {
         <Stack.Screen name="HomePage" component={HomePage} options={{ headerShown: false }} />
 
         {/* admin will go here */}
-        <Stack.Screen name="AdminPage" component={AdminPage} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminPage" component={AdminNavigator} options={{ headerShown: false }} />
 
 
         {/* register doctor form */}

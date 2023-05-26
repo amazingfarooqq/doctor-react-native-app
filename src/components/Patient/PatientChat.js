@@ -1,7 +1,7 @@
 import React, { Component, useEffect } from "react";
 import { Text, View, StyleSheet, ImageBackground, FlatList, Platform, TextInpu, TextInput } from "react-native";
 import bg from "./../../../assets/images/BG.png";
-import messages from "./../../../assets/data/messages.json";
+import messages from "../../../assets/data/messages.json";
 import { KeyboardAvoidingView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useRef, useState } from "react";
