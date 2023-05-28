@@ -16,8 +16,10 @@ dayjs.extend(relativeTime);
 const DoctorsList = () => {
   const navigation = useNavigation();
 
-  const {currentLoggedInUser} = useContextAPI()
 
+  const router = useRoute();
+  console.log("router.params", router);
+  let currentLoggedInUser = router.params.currentLoggedInUser
   const [doctorsListing, setDoctorListing] = useState([])
   // const { chats } = currentLoggedInUser
 

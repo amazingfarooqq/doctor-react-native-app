@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { Button, FlatList, Modal, Pressable } from "react-native";
 import {
   StyleSheet,
@@ -14,6 +14,17 @@ import { useContextAPI } from "../../features/contextapi";
 
 const Requests = () => {
   const { users, setUsers } = useContextAPI();
+
+  const [doctors, setdoctors] = useState([])
+
+  useEffect(() => {
+    
+    const aa = async () => {
+      setdoctors(users.filter(item => item.doctor))
+    }
+
+    aa()
+  },[])
 
   const acceptUser = async (docId) => {
     try {
@@ -81,7 +92,7 @@ const Requests = () => {
       <View style={styles.container}>
       <Text style={styles.heading}>List of requests for registration</Text>
         <FlatList
-          data={users}
+          data={doctors}
           renderItem={renderDoctorItem}
           ItemSeparatorComponent={renderSeparator}
           keyExtractor={(item) => item.id}

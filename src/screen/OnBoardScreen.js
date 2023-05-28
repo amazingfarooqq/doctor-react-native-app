@@ -27,24 +27,26 @@ const OnBoardScreen = () => {
         const data = docSnap.data();
         const documentId = docSnap.id; // Get the document ID
 
-        setCurrentLoggedInUser({ ...data, id: documentId }); // Include document ID in the currentLoggedInUser object
+        const updatedDocumentWithId = { ...data, id: documentId }
+
+        setCurrentLoggedInUser(updatedDocumentWithId); // Include document ID in the currentLoggedInUser object
 
 
         console.log({ data });
         if(data.emergency){
-          navigation.navigate("PatientNavigator", {currentLoggedInUser: data})
+          navigation.navigate("PatientNavigator", {currentLoggedInUser: updatedDocumentWithId})
         }
-        if (data.admin) {
-          navigation.replace("AdminPage", { currentLoggedInUser: data });
+        if (updatedDocumentWithId.admin) {
+          navigation.replace("AdminPage", { currentLoggedInUser: updatedDocumentWithId });
         }
 
         if (data.doctor) {
-          navigation.replace("DoctorNavigator", { currentLoggedInUser: data });
+          navigation.replace("DoctorNavigator", { currentLoggedInUser: updatedDocumentWithId });
         }
 
         if (data.patient) {
           navigation.replace("PatientNavigator", {
-            currentLoggedInUser: data,
+            currentLoggedInUser: updatedDocumentWithId,
           });
         }
 

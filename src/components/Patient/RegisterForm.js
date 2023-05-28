@@ -12,7 +12,7 @@ import {
 import { useContextAPI } from "../../features/contextapi";
 
 const PatientRegisterForm = (props) => {
-  const { registerToCollection } = useContextAPI();
+  const { registerToCollection , setCurrentLoggedInUser} = useContextAPI();
 
   const [fullname, onChangeFullName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
@@ -23,6 +23,7 @@ const PatientRegisterForm = (props) => {
 
   const onSubmit = async () => {
     const formdata = {
+      id: phoneNumber,
       fullname,
       email,
       houseAddress,
@@ -35,8 +36,11 @@ const PatientRegisterForm = (props) => {
       doctors: []
     };
 
+    setCurrentLoggedInUser(formdata);
     await registerToCollection("users", phoneNumber, formdata);
-    navigation.replace("PatientBottomNavigator", { currentLoggedInUser: formdata });
+    console.log("added");
+    navigation.replace("PatientNavigator", { currentLoggedInUser: formdata });
+    console.log("next page");
 
   };
 
@@ -52,7 +56,7 @@ const PatientRegisterForm = (props) => {
 
         <View style={styles.form}>
           <View style={styles.input}>
-            <Text style={styles.inputLabel}>First and Last name</Text>
+            <Text style={styles.inputLabel}>Full name</Text>
             <TextInput
               style={styles.inputControl}
               onChangeText={onChangeFullName}

@@ -42,6 +42,9 @@ const DoctorRegisterForm = (props) => {
     };
 
     await registerToCollection("users", phoneNumber, formdata);
+
+    navigation.replace("DoctorNavigator", { currentLoggedInUser: formdata });
+
   };
 
   const [text, setText] = useState("");
