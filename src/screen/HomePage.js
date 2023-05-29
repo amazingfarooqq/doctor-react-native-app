@@ -6,7 +6,7 @@ import { useContextAPI } from '../features/contextapi';
 const Register = () => {
 
   const navigation = useNavigation()
-  const {registerToCollection} = useContextAPI()
+  const {registerToCollection, setCurrentLoggedInUser} = useContextAPI()
   const router = useRoute();
   
   const {phoneNumber} = router?.params
@@ -20,15 +20,15 @@ const Register = () => {
       houseAddress: "",
       phoneNumber,
       doctor: false,
-      patient: false,
+      patient: true,
       admin: false,
       emergency: true,
       patients: [],
-      doctors: []
+      doctors: [],
+      id: phoneNumber
     };
-
-    
-    // await registerToCollection("users", phoneNumber, data);
+    setCurrentLoggedInUser(data);
+    await registerToCollection("users", phoneNumber, data);
     navigation.navigate("PatientNavigator", {currentLoggedInUser: data})
   }
 

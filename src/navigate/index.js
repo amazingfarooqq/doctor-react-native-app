@@ -14,6 +14,7 @@ import PatientBottomNavigator from "../components/Patient/PatientBottomNavigator
 import DoctorNavigator from "../components/Doctor/DoctorNavigator";
 import DoctorTermsAndConditions from "../components/Doctor/DoctorTermsAndConditions";
 import AdminNavigator from "../components/Admin/AdminNavigator";
+import DoctorChat from "../components/Doctor/DoctorChat";
 
 const Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ const Navigator = () => {
         {/* registered doctor */}
         <Stack.Screen name="DoctorNavigator" component={DoctorNavigator} options={{ headerShown: false }}/>
         <Stack.Screen name="DoctorTermsAndConditions" component={DoctorTermsAndConditions} options={{title: 'Terms and Conditions' }}/>
+        <Stack.Screen name="DoctorChat" component={DoctorChat} />
 
         {/* register patient form */}
         <Stack.Screen name="RegisterPatient" component={PatientRegisterForm} options={{title: 'Register as Patient' }} />

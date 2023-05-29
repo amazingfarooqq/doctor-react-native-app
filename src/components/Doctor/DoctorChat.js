@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from "react";
-import { Text, View, StyleSheet, ImageBackground, FlatList, Platform, TextInpu, TextInput, Modal, Button, Image } from "react-native";
+import { Text, View, StyleSheet, ImageBackground, FlatList, Platform, TextInpu, TextInput, Modal, Button, Image, TouchableOpacity } from "react-native";
 import bg from "./../../../assets/images/BG.png";
 import messages from "./../../../assets/data/messages.json";
 import { KeyboardAvoidingView } from "react-native";
@@ -9,7 +9,7 @@ import {collection,addDoc,serverTimestamp,orderBy,getDocs,query,limit, updateDoc
 import { useCollection } from "react-firebase-hooks/firestore";
 import ReactDOM from "react-dom";
 import { db } from "../../features/firebaseauth";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons , FontAwesome } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import { useContextAPI } from "../../features/contextapi";
 
@@ -42,11 +42,36 @@ const DoctorChat = () => {
     }
   }, [messages]);
 
+  
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
 
+  const [isReviewPopupVisible, setIsReviewPopupVisible] = useState(false);
+const [reviewText, setReviewText] = useState("");
+
+  const handleEndChat = () => {
+    setIsSettingsVisible(false)
+    setIsReviewPopupVisible(true);
+  };
 
   useEffect(() => {
-    navigation.setOptions({ title: router.params.fullname });
-  }, [router.params.name]);
+    navigation.setOptions({
+      title: router.params.fullname,
+      headerRight: () => (
+        <>
+          <TouchableOpacity onPress={() => setIsSettingsVisible(!isSettingsVisible)}>
+            <FontAwesome name="cog" size={24} color="black" style={{ marginRight: 10 }} />
+          </TouchableOpacity>
+          {isSettingsVisible && 
+              <View style={popupStyles.container}>
+              <TouchableOpacity onPress={handleEndChat} style={popupStyles.option}>
+                <Text style={popupStyles.optionText}>End Chat</Text>
+              </TouchableOpacity>
+            </View>
+          }
+        </>
+      ),
+    });
+  }, [router.params.name, isSettingsVisible]);
 
 
   const handleMessage = async (text) => {
@@ -54,11 +79,42 @@ const DoctorChat = () => {
     await addDoc(messagesRef, { text, createdAt: serverTimestamp(), uid: currentLoggedInUser.id });
   }
 
+  const handleSendReview = () => {
+    // Handle sending the review
+    console.log("Review:", reviewText);
+  
+    // Reset the review text and hide the review popup
+    setReviewText("");
+    setIsReviewPopupVisible(false);
+  };
+  
+  const closeReviewPopup = () => {
+        setReviewText("");
+    setIsReviewPopupVisible(false);
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 90}
       style={styles.bg}>
+        {isReviewPopupVisible && (
+            <View style={popupStyles.reviewPopup}>
+              <TextInput
+                value={reviewText}
+                onChangeText={setReviewText}
+                placeholder="Enter your review"
+                style={popupStyles.reviewInput}
+              />
+              <TouchableOpacity onPress={handleSendReview} style={popupStyles.endChat}>
+                <Text style={popupStyles.endChatText}>End Chat</Text>
+              </TouchableOpacity>
+                <TouchableOpacity onPress={closeReviewPopup} style={popupStyles.closeEndChatPopup}>
+                <Text style={popupStyles.closeEndChatPopupText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
       <ImageBackground source={bg} style={styles.bg}>
         <FlatList
           data={allmsgs}
@@ -358,5 +414,74 @@ const msgsStyles = StyleSheet.create({
   },
 });
 
+const popupStyles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    top: 60,
+    right: 10,
+    backgroundColor: "white",
+    borderRadius: 5,
+    padding: 10,
+    elevation: 2,
+  },
+  option: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  optionText: {
+    fontSize: 16,
+    color: "black",
+  },
+
+  reviewPopup: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+    backgroundColor: "#F0F0F0",
+    borderRadius: 8,
+    padding: 8,
+  },
+  reviewInput: {
+    flex: 1,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#CCCCCC",
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+  },
+  endChat: {
+    backgroundColor: "royalblue",
+    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  endChatText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  closeEndChatPopup: {
+    backgroundColor: "royalblue",
+    marginLeft: "5px",
+    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  closeEndChatPopupText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+    closeButton: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+  },
+  closeIcon: {
+    fontSize: 20,
+    color: "gray",
+  },
+});
 
 export default DoctorChat;

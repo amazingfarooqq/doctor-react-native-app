@@ -19,7 +19,7 @@ const DoctorRegisterForm = (props) => {
 
   const { phoneNumber } = router?.params;
 
-  const { registerToCollection } = useContextAPI();
+  const { registerToCollection, setCurrentLoggedInUser } = useContextAPI();
 
   const [fullname, onChangeFullName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
@@ -38,8 +38,10 @@ const DoctorRegisterForm = (props) => {
       patient: false,
       admin: false,
       patients: [],
-      doctors: []
+      doctors: [],
+      id: phoneNumber
     };
+    setCurrentLoggedInUser(formdata);
 
     await registerToCollection("users", phoneNumber, formdata);
 

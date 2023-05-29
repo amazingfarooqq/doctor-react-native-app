@@ -29,6 +29,8 @@ const OnBoardScreen = () => {
 
         const updatedDocumentWithId = { ...data, id: documentId }
 
+        
+
         setCurrentLoggedInUser(updatedDocumentWithId); // Include document ID in the currentLoggedInUser object
 
 
@@ -64,7 +66,7 @@ const OnBoardScreen = () => {
     <View style={styles.container}>
       <Image
         source={
-          "https://i.pinimg.com/originals/85/95/f4/8595f4b711e503bc72fe396e5043e0c2.png"
+          "https://drclinico.pk/wp-content/uploads/2023/01/272744367_103616138903359_4586348054987797749_n-removebg-preview-e1673949192473-170x44.png"
         }
         style={styles.logo}
       />
@@ -97,9 +99,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logo: {
-    width: 150,
+    width: 200,
     height: 150,
     marginBottom: 30,
+    resizeMode: 'contain',
   },
   welcomeText: {
     fontSize: 24,
