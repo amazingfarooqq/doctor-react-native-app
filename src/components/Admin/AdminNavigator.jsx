@@ -7,24 +7,49 @@ import Settings from "./Settings";
 import Donations from "./Donations";
 import DoctorScores from "./DoctorScores";
 import Patients from "./Patients";
+import { Ionicons } from "@expo/vector-icons";
 
 const AdminNavigator = () => {
-
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator initialRouteName="Doctors"  screenOptions={{ headerStyle: { backgroundColor: "whitesmoke" } }}>
-      <Tab.Screen name="Doctors" component={Doctors} options={{ title: 'Doctors' }}/>
-      <Tab.Screen name="Patients" component={Patients} options={{ title: 'Patients' }}/>
-      <Tab.Screen name="Scores" component={DoctorScores} options={{ title: 'Scores' }}/>
-      {/* <Tab.Screen name="Donations" component={Donations} options={{ title: 'Donations' }}/>
-      <Tab.Screen name="Settings" component={Settings} options={{ title: 'Settings' }}/> */}
-      {/* <Tab.Screen name="Register" component={NotImplementedScreen} options={{tabBarIcon: ({color, size}) => {
-        <Ionicons name="logo-whatsapp" size={size} color={color} />
-      }}}/>
-      <Tab.Screen name="Setting" component={NotImplementedScreen} options={{tabBarIcon: ({color, size}) => {
-        <Ionicons name="logo-whatsapp" size={size} color={color} />
-      }}}/> */}
+    <Tab.Navigator
+      initialRouteName="Doctors"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "Doctors") {
+            iconName = focused ? "person" : "person-outline";
+          } else if (route.name === "Patients") {
+            iconName = focused ? "people" : "people-outline";
+          } else if (route.name === "Scores") {
+            iconName = focused ? "star" : "star-outline";
+          }
+          // Return the corresponding icon component
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: "black",
+        inactiveTintColor: "gray",
+        showLabel: false,
+      }}
+    >
+      <Tab.Screen
+        name="Doctors"
+        component={Doctors}
+        options={{ title: "Doctors" }}
+      />
+      <Tab.Screen
+        name="Patients"
+        component={Patients}
+        options={{ title: "Patients" }}
+      />
+      <Tab.Screen
+        name="Scores"
+        component={DoctorScores}
+        options={{ title: "Scores" }}
+      />
     </Tab.Navigator>
   );
 };

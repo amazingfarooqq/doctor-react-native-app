@@ -38,7 +38,7 @@ const DoctorCategoriesForPatient = () => {
                     if(it.doctor && it.approval && it.category?.includes(item.category)){
                         return it
                     }
-                }) })}>
+                }), category: item.category })}>
                 <Text style={{ fontSize: 20, color: "white" }}>{item.category}</Text>
                 <Text style={{ fontSize: 16, color: "gray" }}>{item.description} </Text>
               </TouchableOpacity>

@@ -50,6 +50,15 @@ const ContactTab = () => {
       console.log('Error updating user:', error);
     }
   };
+
+
+  const formatDate = (timestamp) => {
+    const date = timestamp?.toDate();
+    const year = date?.getFullYear();
+    const month = date?.toLocaleString('default', { month: 'long' });
+    const day = date?.getDate();
+    return `${month} ${day}, ${year}`;
+  };
   
   return (
     <View style={styles.container}>
@@ -62,7 +71,10 @@ const ContactTab = () => {
         />
         <View style={styles.nameContainer}>
           {!isEditing ? (
+            <>
             <Text style={styles.name}>{currentLoggedInUser.fullname}</Text>
+
+            </>
           ) : (
             <TextInput
               style={styles.nameInput}
@@ -73,20 +85,19 @@ const ContactTab = () => {
         </View>
       </View>
       <View style={styles.contactInfo}>
-        <Text style={styles.contactLine}>
-          Phone: {phoneNumber}
-        </Text>
-        <Text style={styles.contactLine}>
-          Email: {isEditing ? (
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={text => setEmail(text)}
-            />
-          ) : (
-            email
-          )}
-        </Text>
+
+        {!isEditing &&
+        <>
+          <Text style={styles.contactLine}>
+            Phone: {phoneNumber}
+          </Text>
+          <Text style={styles.contactLine}>Email: {email}</Text>
+          <Text style={styles.contactLine}>Date of Birth: {formatDate(currentLoggedInUser.dateOfBirth)}</Text>
+          <Text style={styles.contactLine}>License Expiration: {formatDate(currentLoggedInUser.licenseExpiration)}</Text>
+          <Text style={styles.contactLine}>Social Security Number: {currentLoggedInUser.socialSecurityNumber}</Text>
+        
+        </>
+        }
         <Text style={styles.contactLine}>
           Address: {isEditing ? (
             <TextInput

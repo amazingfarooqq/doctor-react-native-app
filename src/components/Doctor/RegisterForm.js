@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   TextInput,
   Pressable,
+  Platform,
 } from "react-native";
 import { useContextAPI } from "../../features/contextapi";
 import { Picker } from "react-native";
 import { doctorsData } from "../data/doctorsdata";
 import { Ionicons } from "@expo/vector-icons"; // or any other icon library you prefer
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const DoctorRegisterForm = (props) => {
   const router = useRoute();
@@ -21,32 +23,46 @@ const DoctorRegisterForm = (props) => {
 
   const { registerToCollection, setCurrentLoggedInUser } = useContextAPI();
 
-  const [fullname, onChangeFullName] = React.useState("");
-  const [email, onChangeEmail] = React.useState("");
-  const [houseAddress, setHouseAddress] = useState("")
-  // const [phoneNumber, onChangePhoneNumber] = useState("");
+  const [fullname, onChangeFullName] = useState("");
+  const [email, onChangeEmail] = useState("");
+  const [houseAddress, sethouseAddress] = useState("");
+  const [gender, setGender] = useState("male");
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [selectedCategories, setSelectedCategories] = useState([]);
-  console.log({ selectedCategories });
+  const [licenseExpiration, setLicenseExpiration] = useState(new Date());
+  const [ssn, setSSN] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
+
+
+
   const onSubmit = async () => {
     const formdata = {
       fullname,
       email,
       phoneNumber,
       houseAddress,
+      gender,
+      dateOfBirth,
       category: selectedCategories,
       doctor: true,
       patient: false,
       admin: false,
       patients: [],
       doctors: [],
-      id: phoneNumber
+      id: phoneNumber,
+      licenseExpiration,
+      socialSecurityNumber: ssn,
+      medicalLicenseNumber: licenseNumber,
     };
     setCurrentLoggedInUser(formdata);
 
+    console.log({ formdata });
+
     await registerToCollection("users", phoneNumber, formdata);
 
-    navigation.replace("DoctorNavigator", { currentLoggedInUser: formdata });
-
+    navigation.replace("DoctorNavigator", {
+      currentLoggedInUser: formdata,
+    });
   };
 
   const [text, setText] = useState("");
@@ -66,7 +82,7 @@ const DoctorRegisterForm = (props) => {
 
         <View style={styles.form}>
           <View style={styles.input}>
-            <Text style={styles.inputLabel}>First and Last name</Text>
+            <Text style={styles.inputLabel}>Full Name</Text>
             <TextInput
               style={styles.inputControl}
               onChangeText={onChangeFullName}
@@ -82,39 +98,119 @@ const DoctorRegisterForm = (props) => {
               placeholder=""
             />
           </View>
-          
           <View style={styles.input}>
-            <Text style={styles.inputLabel}>House Address</Text>
+            <Text style={styles.inputLabel}>houseAddress</Text>
             <TextInput
               style={styles.inputControl}
-              onChangeText={setHouseAddress}
+              onChangeText={sethouseAddress}
               value={houseAddress}
               placeholder=""
             />
           </View>
-          {selectedCategories.length > 0 && 
-          <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
-            {selectedCategories.map(item => {
-              return (
-                <View style={{ flexDirection: "row", alignItems: "center",margin: "2px", padding: "2px", borderRadius: "5px", backgroundColor: "#ECF9FF" }}>
-                  <Text>{item} </Text>
-                  <TouchableOpacity onPress={() => {
-                    setSelectedCategories(selectedCategories.filter((cat) =>  cat !== item))
-                  }}>
-                    <Text>X</Text>
-                  </TouchableOpacity>
-                </View>
-              )
-            })}
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Gender</Text>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                style={[
+                  styles.radio,
+                  { backgroundColor: gender === "male" ? "#007aff" : "#fff" },
+                ]}
+                onPress={() => setGender("male")}
+              >
+                <Text
+                  style={[
+                    styles.radioText,
+                    { color: gender === "male" ? "#fff" : "#000" },
+                  ]}
+                >
+                  Male
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.radio,
+                  { backgroundColor: gender === "female" ? "#007aff" : "#fff" },
+                ]}
+                onPress={() => setGender("female")}
+              >
+                <Text
+                  style={[
+                    styles.radioText,
+                    { color: gender === "female" ? "#fff" : "#000" },
+                  ]}
+                >
+                  Female
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          }
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Date of Birth</Text>
+            {Platform.OS === "web" ? (
+              <input
+                type="date"
+                value={dateOfBirth.toISOString().slice(0, 10)}
+                onChange={(e) => {
+                  const selectedDate = new Date(e.target.value);
+                  setDateOfBirth(selectedDate);
+                }}
+              />
+            ) : (
+              <DateTimePicker
+                value={dateOfBirth}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => {
+                  const currentDate = selectedDate || dateOfBirth;
+                  setDateOfBirth(currentDate);
+                }}
+              />
+            )}
+          </View>
+          {selectedCategories.length > 0 && (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              {selectedCategories.map((item) => {
+                return (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      margin: 2,
+                      padding: 2,
+                      borderRadius: 5,
+                      backgroundColor: "#ECF9FF",
+                    }}
+                    key={item}
+                  >
+                    <Text>{item} </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectedCategories((categories) =>
+                          categories.filter((cat) => cat !== item)
+                        );
+                      }}
+                    >
+                      <Text>X</Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
+            </View>
+          )}
           <View style={styles.input}>
             <Text style={styles.inputLabel}>Select Category</Text>
             <Picker
               selectedValue={selectedCategories}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedCategories([...selectedCategories, itemValue])
-              }>
+              }
+            >
               <Picker.Item label="Select a category" value="" />
               {doctorsData.map((category) => (
                 <Picker.Item
@@ -125,11 +221,56 @@ const DoctorRegisterForm = (props) => {
               ))}
             </Picker>
           </View>
-
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>License Expiration</Text>
+            {Platform.OS === "web" ? (
+              <input
+                type="date"
+                value={licenseExpiration.toISOString().slice(0, 10)}
+                onChange={(e) => {
+                  const selectedDate = new Date(e.target.value);
+                  setLicenseExpiration(selectedDate);
+                }}
+              />
+            ) : (
+              <DateTimePicker
+                value={licenseExpiration}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => {
+                  const currentDate = selectedDate || licenseExpiration;
+                  setLicenseExpiration(currentDate);
+                }}
+              />
+            )}
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Social Security Number</Text>
+            <TextInput
+              style={styles.inputControl}
+              onChangeText={setSSN}
+              value={ssn}
+              placeholder=""
+            />
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Medical License Number</Text>
+            <TextInput
+              style={styles.inputControl}
+              onChangeText={setLicenseNumber}
+              value={licenseNumber}
+              placeholder=""
+            />
+          </View>
           <View>
-            <Text>By Clicking Register, you agree to  </Text>
-            
-            <Pressable onPress={() => navigation.navigate("DoctorTermsAndConditions")} style={{color:"skyblue"}}>Terms and Conditions</Pressable>
+            <Text>By Clicking Register, you agree to</Text>
+
+            <Pressable
+              onPress={() => navigation.navigate("DoctorTermsAndConditions")}
+              style={{ color: "skyblue" }}
+            >
+              Terms and Conditions
+            </Pressable>
           </View>
 
           <View style={styles.formAction}>
@@ -224,6 +365,18 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: "600",
     color: "#fff",
+  },
+  radio: {
+    borderWidth: 1,
+    borderColor: "#000",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 4,
+    marginRight: 8,
+  },
+  radioText: {
+    fontSize: 14,
+    fontWeight: "500",
   },
 });
 

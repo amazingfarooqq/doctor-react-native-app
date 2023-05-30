@@ -62,6 +62,15 @@ const Doctors = () => {
   const renderSeparator = () => <View style={styles.separator} />;
 
   const renderDoctorItem = ({ item }) => {
+
+    const formatDate = (timestamp) => {
+      const date = timestamp?.toDate();
+      const year = date?.getFullYear();
+      const month = date?.toLocaleString('default', { month: 'long' });
+      const day = date?.getDate();
+      return `${month} ${day}, ${year}`;
+    };
+
     return (
       <>
         {item.doctor && (
@@ -71,7 +80,13 @@ const Doctors = () => {
             <Text style={styles.infoText}>Email: {item.email}</Text>
             <Text style={styles.infoText}>Phone Number: {item.phoneNumber}</Text>
             <Text style={styles.infoText}>House Address: {item.houseAddress}</Text>
-
+            <Text style={styles.infoText}>Date of Birth: {formatDate(item.dateOfBirth)}</Text>
+            <Text style={styles.infoText}>Gender: {item.gender}</Text>
+            <Text style={styles.infoText}>License Expiration: {formatDate(item.licenseExpiration)}</Text>
+            <Text style={styles.infoText}>Social Security Number: {item.socialSecurityNumber}</Text>
+            <Text style={styles.infoText}>Medical License Number: {item.medicalLicenseNumber}</Text>
+            {/* Include other fields here */}
+            
             <View style={styles.buttonContainer}>
               {!item.approval ? (
                 <TouchableOpacity
@@ -92,6 +107,7 @@ const Doctors = () => {
       </>
     );
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>

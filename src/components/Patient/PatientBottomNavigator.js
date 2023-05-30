@@ -14,16 +14,46 @@ const PatientBottomNavigator = () => {
   const { currentLoggedInUser } = route.params;
   
   return (
-    <Tab.Navigator initialRouteName="DoctorsList"  screenOptions={{ headerStyle: { backgroundColor: "whitesmoke" } }}>
-      <Tab.Screen name="DoctorCategoriesForPatient" component={DoctorCategoriesForPatient} options={{ title: 'Catogories' }} initialParams={{ currentLoggedInUser }}/>
-      <Tab.Screen name="DoctorsList" component={DoctorsList} options={{ title: 'Chats' }} initialParams={{ currentLoggedInUser }}/>
-      <Tab.Screen name="Settings" component={Settings} options={{ title: 'Settings' }} initialParams={{ currentLoggedInUser }}/>
-      {/* <Tab.Screen name="Register" component={NotImplementedScreen} options={{tabBarIcon: ({color, size}) => {
-        <Ionicons name="logo-whatsapp" size={size} color={color} />
-      }}}/>
-      <Tab.Screen name="Setting" component={NotImplementedScreen} options={{tabBarIcon: ({color, size}) => {
-        <Ionicons name="logo-whatsapp" size={size} color={color} />
-      }}}/> */}
+    <Tab.Navigator 
+      initialRouteName="DoctorsList"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "DoctorCategoriesForPatient") {
+            iconName = focused ? "list" : "list-outline";
+          } else if (route.name === "DoctorsList") {
+            iconName = focused ? "chatbubble" : "chatbubble-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
+          }
+          // Return the corresponding icon component
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: "black",
+        inactiveTintColor: "gray",
+        showLabel: false,
+      }}
+    >
+      <Tab.Screen
+        name="DoctorCategoriesForPatient"
+        component={DoctorCategoriesForPatient}
+        options={{ title: "Categories" }}
+        initialParams={{ currentLoggedInUser }}
+      />
+      <Tab.Screen
+        name="DoctorsList"
+        component={DoctorsList}
+        options={{ title: "Chats" }}
+        initialParams={{ currentLoggedInUser }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{ title: "Settings" }}
+        initialParams={{ currentLoggedInUser }}
+      />
     </Tab.Navigator>
   );
 };
