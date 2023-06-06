@@ -13,8 +13,7 @@ import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import { useContextAPI } from "../../features/contextapi";
 
-const PatientChat = () => {
-  console.log({ messages });
+const EmergencyChat = () => {
 
 
   const router = useRoute();
@@ -23,22 +22,24 @@ const PatientChat = () => {
   const navigation = useNavigation();
   const {currentLoggedInUser, setCurrentLoggedInUser} =  useContextAPI()
 
-  console.log({currentLoggedInUser});
-  console.log({currentDoctor});
   const dummy = useRef();
   const messagesRef = collection(db, `${currentLoggedInUser.id}with${currentDoctor.id}`);
   const queryyy = query(messagesRef, orderBy("createdAt", "desc"));
+  
+  const [allmsgs, setAllmsgs] = useState([]);
+  console.log({allmsgs});
 
   const [messages, loading, error] = useCollection(queryyy, { idField: "id" });
-  // const [formValue, setFormValue] = useState("");
 
-  const [allmsgs, setAllmsgs] = useState([]);
 
   const [loader, setLoader] = useState(true);
 
+
   useEffect(() => {
     if (!loading) {
-      setAllmsgs(messages?.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const dd = messages?.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      console.log({dd});
+      setAllmsgs(dd);
       setLoader(false);
     }
   }, [messages]);
@@ -54,21 +55,40 @@ const PatientChat = () => {
     
     
     console.log({currentLoggedInUser});
+    console.log(currentLoggedInUser.doctors.length);
+
     if (!currentLoggedInUser.doctors.includes(currentDoctor.id)) {
-      const patSnapshot = doc(db, "users", currentLoggedInUser.id);
-      const updatedDoctors = [...currentLoggedInUser.doctors, currentDoctor.id];
-      await updateDoc(patSnapshot, { doctors: updatedDoctors });
-      setCurrentLoggedInUser({ ...currentLoggedInUser, doctors: updatedDoctors });
+      if(currentLoggedInUser.doctors.length == 1){
+        console.log("already with one doctor");
+        setAllmsgs([...allmsgs, {
+          id: new Date().toString(),
+          text: "You cant send a message to this doctor",
+          uid: "error",
+          createdAt: ""
+        }])
+        return;
+      } else {
+        const patSnapshot = doc(db, "users", currentLoggedInUser.id);
+        const updatedDoctors = [...currentLoggedInUser.doctors, currentDoctor.id];
+        await updateDoc(patSnapshot, { doctors: updatedDoctors });
+        setCurrentLoggedInUser({ ...currentLoggedInUser, doctors: updatedDoctors });
+      }
     }
 
+    console.log(currentDoctor.patients.includes(currentLoggedInUser.id));
+
     if (!currentDoctor.patients.includes(currentLoggedInUser.id)) {
-      const docSnapshot = await getDoc(doc(db, "users", currentDoctor.id));
-      const previousDataOfDoctor = docSnapshot.data();
-    
-      if (!previousDataOfDoctor.patients.includes(currentLoggedInUser.id)) {
-        const updatedPatients = [...previousDataOfDoctor.patients, currentLoggedInUser.id];
-        const updatedDealingPatients = [...previousDataOfDoctor.dealingPatients, {id: currentLoggedInUser.id, startedAt: new Date()}];
-        await updateDoc(docSnapshot.ref, { patients: updatedPatients, dealingPatients: updatedDealingPatients });
+      if(currentLoggedInUser.doctors.length == 1){
+        console.log("currentLoggedInUser.doctors.length == 1");
+        return;
+      }else {
+        const docSnapshot = await getDoc(doc(db, "users", currentDoctor.id));
+        const previousDataOfDoctor = docSnapshot.data();
+      
+        if (!previousDataOfDoctor.patients.includes(currentLoggedInUser.id)) {
+          const updatedPatients = [...previousDataOfDoctor.patients, currentLoggedInUser.id];
+          await updateDoc(docSnapshot.ref, { patients: updatedPatients });
+        }
       }
     }
   
@@ -275,4 +295,4 @@ const msgsStyles = StyleSheet.create({
 });
 
 
-export default PatientChat;
+export default EmergencyChat;

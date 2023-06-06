@@ -3,6 +3,7 @@ import { View, Image, Text, TextInput, StyleSheet, TouchableOpacity } from 'reac
 import { useContextAPI } from '../../features/contextapi';
 import { db } from '../../features/firebaseauth';
 import { doc, updateDoc } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 const Settings = () => {
   const { currentLoggedInUser, setCurrentLoggedInUser } = useContextAPI();
@@ -50,6 +51,13 @@ const Settings = () => {
       console.log('Error updating user:', error);
     }
   };
+
+  const navigation = useNavigation();
+
+  const logout = () => {
+    navigation.navigate("OnBoardScreen")
+    setCurrentLoggedInUser({})
+  }
   
   return (
     <View style={styles.container}>
@@ -100,9 +108,14 @@ const Settings = () => {
         </Text>
       </View>
       {!isEditing ? (
+        <>
         <TouchableOpacity style={styles.editButton} onPress={() => setEditing(true)}>
           <Text style={styles.editButtonText}>Edit</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.editButton} onPress={logout}>
+        <Text style={styles.editButtonText}>Logout</Text>
+      </TouchableOpacity>
+        </>
       ) : (
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>

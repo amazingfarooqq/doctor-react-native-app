@@ -3,7 +3,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyANrwYXx1fD39eIRBHg7vqnSy6zh_-Qwsc",
   authDomain: "doctor-test-a32dc.firebaseapp.com",
   projectId: "doctor-test-a32dc",

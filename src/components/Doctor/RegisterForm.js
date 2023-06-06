@@ -1,5 +1,5 @@
 import { Link, useNavigation, useRoute } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -15,6 +15,7 @@ import { Picker } from "react-native";
 import { doctorsData } from "../data/doctorsdata";
 import { Ionicons } from "@expo/vector-icons"; // or any other icon library you prefer
 import DateTimePicker from "@react-native-community/datetimepicker";
+import {GMCInputs, PMDCInputs, USLMEInputs} from "./InputsForDoctor"
 
 const DoctorRegisterForm = (props) => {
   const router = useRoute();
@@ -32,7 +33,8 @@ const DoctorRegisterForm = (props) => {
   const [licenseExpiration, setLicenseExpiration] = useState(new Date());
   const [ssn, setSSN] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
-
+  const [registerNumber, setRegisterNumber] = useState("")
+  const [country, setCountry] = useState('pak');
 
 
   const onSubmit = async () => {
@@ -53,6 +55,11 @@ const DoctorRegisterForm = (props) => {
       licenseExpiration,
       socialSecurityNumber: ssn,
       medicalLicenseNumber: licenseNumber,
+      registerNumber: {
+        registerNumber,
+        country
+      },
+      dealingPatients: []
     };
     setCurrentLoggedInUser(formdata);
 
@@ -106,6 +113,10 @@ const DoctorRegisterForm = (props) => {
               value={houseAddress}
               placeholder=""
             />
+          </View>
+
+          <View style={styles.input}>
+            <ComponentForNumber registerNumber={registerNumber} setRegisterNumber={setRegisterNumber} country={country} setCountry={setCountry}/>
           </View>
           <View style={styles.input}>
             <Text style={styles.inputLabel}>Gender</Text>
@@ -263,15 +274,17 @@ const DoctorRegisterForm = (props) => {
             />
           </View>
           <View>
-            <Text>By Clicking Register, you agree to</Text>
+  <Text style={{ marginBottom: 8 }}>By Clicking Register, you agree to</Text>
 
-            <Pressable
-              onPress={() => navigation.navigate("DoctorTermsAndConditions")}
-              style={{ color: "skyblue" }}
-            >
-              Terms and Conditions
-            </Pressable>
-          </View>
+  <Pressable
+    onPress={() => navigation.navigate("DoctorTermsAndConditions")}
+    style={{ color: "skyblue" }}
+  >
+    <Text>Terms and Conditions</Text>
+  </Pressable>
+</View>
+
+          
 
           <View style={styles.formAction}>
             <TouchableOpacity onPress={onSubmit}>
@@ -295,6 +308,72 @@ const DoctorRegisterForm = (props) => {
     </SafeAreaView>
   );
 };
+
+
+const ComponentForNumber = ({registerNumber, setRegisterNumber, country,setCountry}) => {
+  
+
+  const renderInputs = () => {
+    if (country === 'pak') {
+      return (
+        <PMDCInputs setRegisterNumber={setRegisterNumber}/>
+      );
+    } else if (country === 'uk') {
+      return (
+        <GMCInputs setRegisterNumber={setRegisterNumber}/>
+      );
+    } else if (country === 'us') {
+      return (
+        <USLMEInputs setRegisterNumber={setRegisterNumber}/>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <View style={ComponentForNumberStyles.container}>
+      <Text style={styles.label}>Select Country:</Text>
+      <Picker
+        selectedValue={country}
+        onValueChange={(value) => setCountry(value)}
+        style={ComponentForNumberStyles.picker}
+      >
+        <Picker.Item label="Select" value="" />
+        <Picker.Item label="Pak ( pmdc number )" value="pak" />
+        <Picker.Item label="UK ( GMC )" value="uk" />
+        <Picker.Item label="US ( USLME )" value="us" />
+      </Picker>
+
+      {renderInputs()}
+    </View>
+  );
+};
+
+const ComponentForNumberStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  picker: {
+    width: 200,
+    height: 40,
+    marginBottom: 10,
+  },
+  input: {
+    width: 200,
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'gray',
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+});
+
+
+
 
 const styles = StyleSheet.create({
   container: {

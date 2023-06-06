@@ -63,6 +63,8 @@ const DoctorScores = () => {
     <View style={styles.container}>
       <Text style={styles.heading}>Allocate Money to Doctors</Text>
       <Text style={styles.totalDonations}>Total Donations: 100</Text>
+
+      <App />
       <FlatList
         data={doctors}
         renderItem={renderDoctorItem}
@@ -139,3 +141,59 @@ const styles = StyleSheet.create({
 });
 
 export default DoctorScores;
+
+const dealingPatients = [
+  {
+    id: "666",
+    startedAt: "2023-06-06 10:42:58",
+  },
+  {
+    id: "23",
+    startedAt: "2023-03-06 10:42:58",
+  },
+  {
+    id: "123",
+    startedAt: "2023-05-06 10:42:58",
+  },
+];
+
+const App = () => {
+  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [startMonth, setStartMonth] = useState('');
+  const [endMonth, setEndMonth] = useState('');
+
+  console.log({filteredPatients});
+
+  const filterPatientsByRange = (startMonth, endMonth) => {
+    const filtered = dealingPatients.filter(patient => {
+      const timestamp = new Date(patient.startedAt).getMonth() + 1; // +1 because months are zero-based
+      return timestamp >= startMonth && timestamp <= endMonth;
+    });
+    setFilteredPatients(filtered);
+  };
+
+  return (
+    <View>
+      <TextInput
+        onChangeText={text => setStartMonth(parseInt(text))}
+        placeholder="Start Month (1-12)"
+        keyboardType="numeric"
+      />
+      <TextInput
+        onChangeText={text => setEndMonth(parseInt(text))}
+        placeholder="End Month (1-12)"
+        keyboardType="numeric"
+      />
+
+      <Button
+        onPress={() => filterPatientsByRange(startMonth, endMonth)}
+        title="Filter"
+      />
+
+      {filteredPatients.map(patient => (
+        <Text key={patient.id}>{patient.id}</Text>
+      ))}
+    </View>
+  );
+};
+

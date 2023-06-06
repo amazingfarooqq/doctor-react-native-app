@@ -82,16 +82,12 @@ const PatientRegisterForm = (props) => {
             />
           </View>
 
-          <Text style={{ marginBottom: 8 }}>By Clicking Register, you agree to</Text>
           <View>
-          <Pressable
-            onPress={() => navigation.navigate("DoctorTermsAndConditions")}
-            style={{ color: "skyblue" }}
-          >
-            <Text>Terms and Conditions</Text>
-          </Pressable>
+            <Text>By Clicking Register, you agree to  </Text>
+            
+            <Pressable onPress={() => navigation.navigate("DoctorTermsAndConditions")} style={{color:"skyblue"}}>Terms and Conditions</Pressable>
           </View>
-          
+
           <View style={styles.formAction}>
             <TouchableOpacity onPress={onSubmit}>
               <View style={styles.btn}>

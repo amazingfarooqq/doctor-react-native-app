@@ -29,7 +29,7 @@ const Register = () => {
     };
     setCurrentLoggedInUser(data);
     await registerToCollection("users", phoneNumber, data);
-    navigation.navigate("PatientNavigator", {currentLoggedInUser: data})
+    navigation.navigate("EmergencyNavigator", {currentLoggedInUser: data})
   }
 
 

@@ -15,6 +15,9 @@ import DoctorNavigator from "../components/Doctor/DoctorNavigator";
 import DoctorTermsAndConditions from "../components/Doctor/DoctorTermsAndConditions";
 import AdminNavigator from "../components/Admin/AdminNavigator";
 import DoctorChat from "../components/Doctor/DoctorChat";
+import EmergencyNavigator from "../components/Emergency/EmergencyNavigator";
+import EmergencyChat from "../components/Emergency/EmergencyChat";
+import EmergencyPageChats from "../components/Emergency/EmergencyPageChats";
 
 const Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -50,6 +53,11 @@ const Navigator = () => {
         <Stack.Screen name="PatientNavigator" component={PatientBottomNavigator} options={{ headerShown: false }}/>
         <Stack.Screen name="PatientPageChats" component={PatientPageChats}  options={{ title: 'Doctors' }}/>
         <Stack.Screen name="PatientChat" component={PatientChat} />
+
+
+        <Stack.Screen name="EmergencyNavigator" component={EmergencyNavigator} options={{ headerShown: false }}/>
+        <Stack.Screen name="EmergencyPageChats" component={EmergencyPageChats}  options={{ title: 'Doctors' }}/>
+        <Stack.Screen name="EmergencyChat" component={EmergencyChat} />
         
         <Stack.Screen name="Home" component={MainTabNavigator} options={{ headerShown: false }} />
 

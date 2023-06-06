@@ -25,13 +25,13 @@ const Doctors = () => {
     filterDoctors();
   }, [users, filter]);
 
-  const acceptUser = async (docId) => {
+  const takeAction = async (docId, action) => {
     try {
       const docRef = doc(db, "users", docId);
-      await updateDoc(docRef, { approval: true });
+      await updateDoc(docRef, { approval: action });
       const updatedList = users.map((item) => {
         if (item.id === docId) {
-          return { ...item, approval: true };
+          return { ...item, approval: action };
         } else {
           return item;
         }
@@ -42,6 +42,7 @@ const Doctors = () => {
       console.error("Error updating document: ", error);
     }
   };
+
 
 
   const countAll = () => {
@@ -91,15 +92,24 @@ const Doctors = () => {
               {!item.approval ? (
                 <TouchableOpacity
                   style={styles.acceptButton}
-                  onPress={() => acceptUser(item.id)}
+                  onPress={() => takeAction(item.id, true)}
                   activeOpacity={0.8}
                 >
                   <Text style={styles.buttonText}>Accept Doctor</Text>
                 </TouchableOpacity>
               ) : (
-                <View style={styles.acceptedButton}>
-                  <Text style={styles.buttonText}>Accepted</Text>
-                </View>
+                <>
+                  <View style={styles.acceptedButton}>
+                    <Text style={styles.buttonText}>Accepted</Text>
+                  </View>
+                  <TouchableOpacity
+                  style={styles.rejectButton}
+                  onPress={() => takeAction(item.id, false)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.buttonText}>Reject Doctor</Text>
+                </TouchableOpacity>
+                </>
               )}
             </View>
           </View>
@@ -218,6 +228,12 @@ const styles = StyleSheet.create({
   },
   acceptButton: {
     backgroundColor: "#4caf50",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+  },
+  rejectButton: {
+    backgroundColor: "red",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 4,

@@ -35,18 +35,25 @@ const OnBoardScreen = () => {
 
 
         console.log({ data });
-        if(data.emergency){
-          navigation.navigate("PatientNavigator", {currentLoggedInUser: updatedDocumentWithId})
+        if(data.emergency && data.patient){
+          console.log("emergency");
+          navigation.navigate("EmergencyNavigator", {currentLoggedInUser: updatedDocumentWithId})
         }
         if (updatedDocumentWithId.admin) {
+          console.log("admin");
+
           navigation.replace("AdminPage", { currentLoggedInUser: updatedDocumentWithId });
         }
 
         if (data.doctor) {
+          console.log("doctor");
+
           navigation.replace("DoctorNavigator", { currentLoggedInUser: updatedDocumentWithId });
         }
 
-        if (data.patient) {
+        if (data.patient && !data.emergency) {
+          console.log("patient");
+
           navigation.replace("PatientNavigator", {
             currentLoggedInUser: updatedDocumentWithId,
           });

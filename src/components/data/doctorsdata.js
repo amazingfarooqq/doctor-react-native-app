@@ -1,5 +1,9 @@
 export const doctorsData = [
       {
+        "category": "General Specialist",
+        "description": "These Doctors are specialist in each field."
+      },
+      {
         "category": "Allergist/Immunologist",
         "description": "Specializes in allergies and immune system disorders"
       },

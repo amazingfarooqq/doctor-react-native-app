@@ -3,6 +3,7 @@ import { View, Image, Text, TextInput, StyleSheet, TouchableOpacity } from 'reac
 import { useContextAPI } from '../../features/contextapi';
 import { db } from '../../features/firebaseauth';
 import { doc, updateDoc } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 const ContactTab = () => {
   const { currentLoggedInUser, setCurrentLoggedInUser } = useContextAPI();
@@ -60,6 +61,14 @@ const ContactTab = () => {
     return `${month} ${day}, ${year}`;
   };
   
+
+  const navigation = useNavigation();
+
+  const logout = () => {
+    navigation.navigate("OnBoardScreen")
+    setCurrentLoggedInUser({})
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -92,8 +101,8 @@ const ContactTab = () => {
             Phone: {phoneNumber}
           </Text>
           <Text style={styles.contactLine}>Email: {email}</Text>
-          <Text style={styles.contactLine}>Date of Birth: {formatDate(currentLoggedInUser.dateOfBirth)}</Text>
-          <Text style={styles.contactLine}>License Expiration: {formatDate(currentLoggedInUser.licenseExpiration)}</Text>
+          {/* <Text style={styles.contactLine}>Date of Birth: {formatDate(currentLoggedInUser.dateOfBirth)}</Text>
+          <Text style={styles.contactLine}>License Expiration: {formatDate(currentLoggedInUser.licenseExpiration)}</Text> */}
           <Text style={styles.contactLine}>Social Security Number: {currentLoggedInUser.socialSecurityNumber}</Text>
         
         </>
@@ -111,9 +120,14 @@ const ContactTab = () => {
         </Text>
       </View>
       {!isEditing ? (
+        <>
         <TouchableOpacity style={styles.editButton} onPress={() => setEditing(true)}>
           <Text style={styles.editButtonText}>Edit</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.editButton} onPress={logout}>
+          <Text style={styles.editButtonText}>Logout</Text>
+        </TouchableOpacity>
+        </>
       ) : (
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>
